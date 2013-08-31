@@ -1,8 +1,10 @@
-xsoup
+Xsoup
 ----
 XPath selector for Jsoup.
 
-Usage:
+>Under developing yet!
+
+## Get started:
 
 ```java
     @Test
@@ -18,3 +20,39 @@ Usage:
         Assert.assertEquals("https://github.com", result);
     }
 ```
+
+## Performance:
+
+Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/):
+
+	Normal HTML, size 44KB
+	
+	XPath: "//a"
+	
+	CSS Selector: "a"
+	
+	2000 times
+
+	Environment：Mac Air MD231CH/A 
+
+	CPU: 1.8Ghz Intel Core i5
+	
+
+
+<table>
+    <tr>
+        <td width="100">Operation</td>
+        <td width="100">Jsoup</td>
+        <td>HtmlCleaner</td>
+    </tr>
+    <tr>
+        <td>parse</td>
+        <td>3207</td>
+        <td>7999</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>99</td>
+        <td>380</td>
+    </tr>
+</table>
