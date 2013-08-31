@@ -23,7 +23,7 @@ XPath selector for Jsoup.
 
 ## Performance:
 
-Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/):
+Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/),Jsoup is much faster:
 
 	Normal HTML, size 44KB
 	
@@ -56,3 +56,5 @@ Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlclea
         <td>380</td>
     </tr>
 </table>
+
+So I try to apply XPath selector to Jsoup for better performance!
