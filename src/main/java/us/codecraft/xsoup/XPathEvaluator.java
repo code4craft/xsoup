@@ -1,6 +1,7 @@
 package us.codecraft.xsoup;
 
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Collector;
 import org.jsoup.select.Elements;
@@ -22,6 +23,11 @@ public class XPathEvaluator {
 
     public XElements evaluate(Element element) {
         Elements elements = Collector.collect(evaluator, element);
+        return new XElements(elements,attribute);
+    }
+
+    public XElements evaluate(String html) {
+        Elements elements = Collector.collect(evaluator, Jsoup.parse(html));
         return new XElements(elements,attribute);
     }
 

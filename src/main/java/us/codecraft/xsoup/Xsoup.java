@@ -8,7 +8,11 @@ import org.jsoup.nodes.Element;
 public class Xsoup {
 
     public static XElements select(Element element, String xpathStr) {
-        return new XPathParser().parse(xpathStr).evaluate(element);
+        return XPathParser.parse(xpathStr).evaluate(element);
+    }
+
+    public static XPathEvaluator compile(String xpathStr) {
+        return XPathParser.parse(xpathStr);
     }
 
 }
