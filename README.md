@@ -21,7 +21,7 @@ XPath selector for Jsoup.
     }
 ```
 
-## Performance:
+## Why:
 
 Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/),Jsoup is much faster:
 
