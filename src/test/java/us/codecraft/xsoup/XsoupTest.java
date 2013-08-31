@@ -12,7 +12,11 @@ public class XsoupTest {
     @Test
     public void testSelect() {
         String html = "<html><div><a href='https://github.com'>github.com</a></div></html>";
-        XElements xElements = Xsoup.select(Jsoup.parse(html), "//a/@href");
-        Assert.assertEquals("https://github.com",xElements.get());
+
+        String result = Xsoup.select(Jsoup.parse(html), "//a/@href").get();
+        Assert.assertEquals("https://github.com", result);
+
+        result = Xsoup.compile("//a/@href").evaluate(html).get();
+        Assert.assertEquals("https://github.com", result);
     }
 }
