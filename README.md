@@ -26,18 +26,11 @@ XPath selector for Jsoup.
 Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/),Jsoup is much faster:
 
 	Normal HTML, size 44KB
-	
-	XPath: "//a"
-	
-	CSS Selector: "a"
-	
-	2000 times
+	XPath: "//a"	| 	CSS Selector: "a"
+	Run for 2000 times
 
 	Environment：Mac Air MD231CH/A 
-
 	CPU: 1.8Ghz Intel Core i5
-	
-
 
 <table>
     <tr>
@@ -47,13 +40,13 @@ Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlclea
     </tr>
     <tr>
         <td>parse</td>
-        <td>3207</td>
-        <td>7999</td>
+        <td>3,207(ms)</td>
+        <td>7,999(ms)</td>
     </tr>
     <tr>
         <td>select</td>
-        <td>99</td>
-        <td>380</td>
+        <td>99(ms)</td>
+        <td>380(ms)</td>
     </tr>
 </table>
 
