@@ -2,6 +2,7 @@ package us.codecraft.xsoup;
 
 import junit.framework.Assert;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 
 /**
@@ -13,10 +14,12 @@ public class XsoupTest {
     public void testSelect() {
         String html = "<html><div><a href='https://github.com'>github.com</a></div></html>";
 
-        String result = Xsoup.select(Jsoup.parse(html), "//a/@href").get();
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//a/@href").get();
         Assert.assertEquals("https://github.com", result);
 
-        result = Xsoup.compile("//a/@href").evaluate(html).get();
+        result = Xsoup.compile("//a/@href").evaluate(document).get();
         Assert.assertEquals("https://github.com", result);
     }
 }
