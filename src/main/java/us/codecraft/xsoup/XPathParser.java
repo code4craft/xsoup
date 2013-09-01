@@ -1,7 +1,6 @@
 package us.codecraft.xsoup;
 
 import org.jsoup.helper.Validate;
-import org.jsoup.parser.TokenQueue;
 import org.jsoup.select.Evaluator;
 import org.jsoup.select.Selector;
 
@@ -87,7 +86,7 @@ public class XPathParser {
     private void findElements() {
         if (tq.matchesWord()) {
             byTag();
-        } else if (tq.matchChomp("[@")) {
+        } else if (tq.matches("[@")) {
             byAttribute();
         } else {
             // unhandled
@@ -120,34 +119,32 @@ public class XPathParser {
     }
 
     private void byAttribute() {
-        TokenQueue cq = new TokenQueue(tq.chompBalanced('[', ']')); // content queue
+        XTokenQueue cq = new XTokenQueue(tq.chompBalanced('[', ']')); // content queue
+        cq.matchChomp("@");
         String key = cq.consumeToAny("=", "!=", "^=", "$=", "*=", "~="); // eq, not, start, end, contain, match, (no val)
         Validate.notEmpty(key);
         cq.consumeWhitespace();
 
         if (cq.isEmpty()) {
-            if (key.startsWith("^"))
-                evals.add(new Evaluator.AttributeStarting(key.substring(1)));
-            else
-                evals.add(new Evaluator.Attribute(key));
+            evals.add(new Evaluator.Attribute(key));
         } else {
             if (cq.matchChomp("="))
-                evals.add(new Evaluator.AttributeWithValue(key, cq.remainder()));
+                evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("!="))
-                evals.add(new Evaluator.AttributeWithValueNot(key, cq.remainder()));
+                evals.add(new Evaluator.AttributeWithValueNot(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("^="))
-                evals.add(new Evaluator.AttributeWithValueStarting(key, cq.remainder()));
+                evals.add(new Evaluator.AttributeWithValueStarting(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("$="))
-                evals.add(new Evaluator.AttributeWithValueEnding(key, cq.remainder()));
+                evals.add(new Evaluator.AttributeWithValueEnding(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("*="))
-                evals.add(new Evaluator.AttributeWithValueContaining(key, cq.remainder()));
+                evals.add(new Evaluator.AttributeWithValueContaining(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("~="))
-                evals.add(new Evaluator.AttributeWithValueMatching(key, Pattern.compile(cq.remainder())));
+                evals.add(new Evaluator.AttributeWithValueMatching(key, Pattern.compile(XTokenQueue.trimQuotes(cq.remainder()))));
             else
                 throw new Selector.SelectorParseException("Could not parse attribute query '%s': unexpected token at '%s'", query, cq.remainder());
         }

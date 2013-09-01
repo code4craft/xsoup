@@ -432,4 +432,16 @@ public class XTokenQueue {
     public String toString() {
         return queue.substring(pos);
     }
+
+    public static String trimQuotes(String str) {
+        Validate.isTrue(str != null && str.length() > 0);
+        String quote = str.substring(0,1);
+        if (StringUtil.in(quote,"\"","'")){
+            Validate.isTrue(str.endsWith(quote));
+            str = str.substring(1, str.length() - 2);
+        }
+        Validate.isFalse(str.contains("'")||str.contains("\""));
+        return str;
+    }
+
 }

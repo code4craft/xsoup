@@ -15,7 +15,6 @@ public class XsoupTest {
     @Test
     public void testSelect() {
 
-
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.select(document, "//a").get();
@@ -35,6 +34,29 @@ public class XsoupTest {
 
         result = Xsoup.select(document, "/html//div/div/a").get();
         Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+
+        result = Xsoup.select(document, "/html/div/div/a").get();
+        Assert.assertNull(result);
+
+    }
+
+    @Test
+    public void testAttribute() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//a[@href]").get();
+        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+
+        result = Xsoup.select(document, "//a[@id]").get();
+        Assert.assertNull(result);
+
+        result = Xsoup.select(document, "//div[@id=test]").get();
+        Assert.assertEquals("<div id=\"test\">\n" +
+                " <div>\n" +
+                "  <a href=\"https://github.com\">github.com</a>\n" +
+                " </div>\n" +
+                "</div>", result);
 
     }
 }
