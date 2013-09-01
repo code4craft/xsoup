@@ -3,6 +3,8 @@ package us.codecraft.xsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.helper.Validate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -18,6 +20,8 @@ public class XTokenQueue {
     private int pos = 0;
 
     private static final char ESC = '\\'; // escape char for chomp balanced.
+
+    private static final String[] quotes = {"\"", "'"};
 
     /**
      * Create a new TokenQueue.
@@ -457,6 +461,45 @@ public class XTokenQueue {
         }
         Validate.isFalse(str.contains("'") || str.contains("\""), "Invalid quotes for " + str);
         return str;
+    }
+
+    public String consumeToUnescaped(String str) {
+        String s = consumeToAny(str);
+        if (s.length() > 0 && s.charAt(s.length() - 1) == '\\') {
+            s += consume();
+            s += consumeToUnescaped(str);
+        }
+        Validate.isTrue(pos < queue.length(), "Unclosed quotes! " + queue);
+        return s;
+    }
+
+    public List<String> parseFuncionParams() {
+        List<String> params = new ArrayList<String>();
+        StringBuilder accum = new StringBuilder();
+        while (!isEmpty()) {
+            consumeWhitespace();
+            if (matchChomp(",")) {
+                params.add(accum.toString());
+                accum = new StringBuilder();
+            } else if (matchesAny(quotes)) {
+                String quoteUsed = consumeAny(quotes);
+                accum.append(quoteUsed);
+                accum.append(consumeToUnescaped(quoteUsed));
+                accum.append(consume());
+            } else {
+                accum.append(consumeToAny("\"", "'", ","));
+            }
+        }
+        if (accum.length() > 0) {
+            params.add(accum.toString());
+        }
+        return params;
+    }
+
+    public static List<String> parseFuncionParams(String paramStr) {
+        XTokenQueue tq = new XTokenQueue(paramStr);
+        return tq.parseFuncionParams();
+
     }
 
 }

@@ -132,9 +132,19 @@ public class XPathParser {
         String remainder = tq.remainder();
         functionText(remainder);
         if (elementOperator == null) {
+            functionRegex(remainder);
+        }
+        if (elementOperator == null) {
             elementOperator = new ElementOperator.Function(remainder);
         }
         noEvalAllow = true;
+    }
+
+    private void functionRegex(String remainder) {
+        if (remainder.startsWith("regex(")){
+            XTokenQueue newtq = new XTokenQueue(remainder);
+
+        }
     }
 
     private void functionText(String remainder) {

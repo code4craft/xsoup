@@ -164,9 +164,9 @@ In Xsoup, we use some function (maybe not in Standard XPath 1.0):
     </tr>
 </table>
 
-### Extended syntax:
+### Extended syntax supported:
 
-These syntax are extended only in Xsoup (for convenience in extracting HTML):
+These XPath syntax are extended only in Xsoup (for convenience in extracting HTML, refer to Jsoup CSS Selector):
 
 <table>
     <tr>
