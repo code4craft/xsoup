@@ -5,6 +5,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * @author code4crafter@gmail.com
  */
@@ -141,6 +143,11 @@ public class XsoupTest {
                 " <a href=\"https://github.com\">github.com</a>\n" +
                 "</div>", result);
 
+        List<String> list = Xsoup.select(document, "//*[@*]/html()").list();
+        Assert.assertEquals("<div>\n" +
+                " <a href=\"https://github.com\">github.com</a>\n" +
+                "</div>",list.get(0));
+        Assert.assertEquals("github.com",list.get(1));
     }
 
 }

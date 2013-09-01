@@ -98,6 +98,11 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
         <td>yes</td>
     </tr>
     <tr>
+        <td>wildcard in attribute</td>
+        <td>/[@*]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
         <td>function</td>
         <td>function()</td>
         <td>part</td>

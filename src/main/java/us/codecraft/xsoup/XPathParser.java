@@ -149,7 +149,11 @@ public class XPathParser {
         cq.consumeWhitespace();
 
         if (cq.isEmpty()) {
-            evals.add(new Evaluator.Attribute(key));
+            if ("*".equals(key)) {
+                evals.add(new XEvaluators.HasAnyAttribute());
+            } else {
+                evals.add(new Evaluator.Attribute(key));
+            }
         } else {
             if (cq.matchChomp("=")) {
                 //to support select one class out of all
