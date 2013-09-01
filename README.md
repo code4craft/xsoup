@@ -158,9 +158,9 @@ In Xsoup, we use some function (maybe not in Standard XPath 1.0):
         <td>not support</td>
     </tr>
     <tr>
-        <td width="100">regex(expr)</td>
+        <td width="100">regex(@attr,expr,group)</td>
         <td width="100">use regex to extract content</td>
-        <td>todo</td>
+        <td>not support</td>
     </tr>
 </table>
 
