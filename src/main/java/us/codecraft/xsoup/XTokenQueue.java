@@ -3,6 +3,8 @@ package us.codecraft.xsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.helper.Validate;
 
+import java.util.regex.Pattern;
+
 /**
  * A character queue with parsing helpers.
  * <p/>
@@ -77,6 +79,10 @@ public class XTokenQueue {
      */
     public boolean matches(String seq) {
         return queue.regionMatches(true, pos, seq, 0, seq.length());
+    }
+
+    public boolean matchesRegex(String seq) {
+        return Pattern.matches(seq,queue.substring(pos));
     }
 
     /**

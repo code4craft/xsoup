@@ -88,6 +88,8 @@ public class XPathParser {
             byTag();
         } else if (tq.matches("[@")) {
             byAttribute();
+        } else if (tq.matchesRegex("\\[\\d+\\]")) {
+            byNth();
         } else {
             // unhandled
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
@@ -95,16 +97,8 @@ public class XPathParser {
 
     }
 
-    private void byId() {
-        String id = tq.consumeCssIdentifier();
-        Validate.notEmpty(id);
-        evals.add(new Evaluator.Id(id));
-    }
+    private void byNth(){
 
-    private void byClass() {
-        String className = tq.consumeCssIdentifier();
-        Validate.notEmpty(className);
-        evals.add(new Evaluator.Class(className.trim().toLowerCase()));
     }
 
     private void byTag() {
