@@ -12,13 +12,9 @@ import org.jsoup.select.Evaluator;
 abstract class StructuralEvaluator extends Evaluator {
     Evaluator evaluator;
 
-    static class Root extends StructuralEvaluator {
-        public Root(Evaluator evaluator) {
-            this.evaluator = evaluator;
-        }
-
+    static class Root extends Evaluator {
         public boolean matches(Element root, Element element) {
-            return evaluator.matches(root, root);
+            return root == element;
         }
     }
 
@@ -64,7 +60,7 @@ abstract class StructuralEvaluator extends Evaluator {
                 return false;
 
             Element parent = element.parent();
-            while (parent != root) {
+            while (parent != null) {
                 if (evaluator.matches(root, parent))
                     return true;
                 parent = parent.parent();

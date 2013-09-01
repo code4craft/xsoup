@@ -12,14 +12,14 @@ public class XsoupTest {
 
     @Test
     public void testSelect() {
-        String html = "<html><div><a href='https://github.com'>github.com</a></div></html>";
+        String html = "<html><div><a href=\"https://github.com\">github.com</a></div></html>";
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//a/@href").get();
-        Assert.assertEquals("https://github.com", result);
+        String result = Xsoup.select(document, "//a").get();
+        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
 
-        result = Xsoup.compile("//a/@href").evaluate(document).get();
-        Assert.assertEquals("https://github.com", result);
+        result = Xsoup.compile("//a").evaluate(document).get();
+        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
     }
 }

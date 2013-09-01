@@ -2,7 +2,8 @@ package us.codecraft.xsoup;
 
 import org.jsoup.helper.Validate;
 import org.jsoup.parser.TokenQueue;
-import org.jsoup.select.*;
+import org.jsoup.select.Evaluator;
+import org.jsoup.select.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,89 +14,59 @@ import java.util.regex.Pattern;
  */
 public class XPathParser {
 
-    private String[] combinators = new String[]{"/", "(", ")", "[", "]", "\"", "'", "=", "<", ">"};
+    private String[] combinators = new String[]{"//", "/", "|"};
 
-    private TokenQueue tq;
+    private XTokenQueue tq;
     private String query;
     private List<Evaluator> evals = new ArrayList<Evaluator>();
+    private String attribute;
 
     public XPathParser(String xpathStr) {
         this.query = xpathStr;
-        this.tq = new TokenQueue(xpathStr);
+        this.tq = new XTokenQueue(xpathStr);
     }
 
     public XPathEvaluator parse() {
-        //todo: parse
 
         while (!tq.isEmpty()) {
-            // hierarchy and extras
-            boolean seenWhite = tq.consumeWhitespace();
 
             if (tq.matchesAny(combinators)) {
-                combinator(tq.consume());
-            } else if (seenWhite) {
-                combinator(' ');
-            } else { // E.class, E#id, E[attr] etc. AND
-                findElements(); // take next el, #. etc off queue
+                combinator(tq.consumeAny(combinators));
+            } else {
+                findElements();
             }
         }
 
         if (evals.size() == 1)
-            return new XPathEvaluator(evals.get(0), null);
+            return new XPathEvaluator(evals.get(0), attribute);
 
-        return new XPathEvaluator(new CombiningEvaluator.And(evals), "href");
+        return new XPathEvaluator(new CombiningEvaluator.And(evals), attribute);
     }
 
-    private void combinator(char combinator) {
-        tq.consumeWhitespace();
-        String subQuery = consumeSubQuery(); // support multi > childs
-
-        Evaluator rootEval; // the new topmost evaluator
-        Evaluator currentEval; // the evaluator the new eval will be combined to. could be root, or rightmost or.
-        Evaluator newEval = parse(subQuery).getEvaluator(); // the evaluator to add into target evaluator
-        boolean replaceRightMost = false;
-
-        if (evals.size() == 1) {
-            rootEval = currentEval = evals.get(0);
-            // make sure OR (,) has precedence:
-            if (rootEval instanceof CombiningEvaluator.Or && combinator != ',') {
-                currentEval = ((CombiningEvaluator.Or) currentEval).rightMostEvaluator();
-                replaceRightMost = true;
-            }
-        }
-        else {
-            rootEval = currentEval = new CombiningEvaluator.And(evals);
+    private void combinator(String combinator) {
+        Evaluator currentEval;
+        if (evals.size() == 0) {
+            currentEval = new StructuralEvaluator.Root();
+        } else if (evals.size() == 1) {
+            currentEval = evals.get(0);
+        } else {
+            currentEval = new CombiningEvaluator.And(evals);
         }
         evals.clear();
-
-        // for most combinators: change the current eval into an AND of the current eval and the new eval
-        if (combinator == '>')
-            currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.ImmediateParent(currentEval));
-        else if (combinator == ' ')
-            currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.Parent(currentEval));
-        else if (combinator == '+')
-            currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.ImmediatePreviousSibling(currentEval));
-        else if (combinator == '~')
-            currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.PreviousSibling(currentEval));
-        else if (combinator == ',') { // group or.
-            CombiningEvaluator.Or or;
-            if (currentEval instanceof CombiningEvaluator.Or) {
-                or = (CombiningEvaluator.Or) currentEval;
-                or.add(newEval);
-            } else {
-                or = new CombiningEvaluator.Or();
-                or.add(currentEval);
-                or.add(newEval);
-            }
-            currentEval = or;
+        String subQuery = consumeSubQuery();
+        XPathEvaluator newEval = parse(subQuery);
+        if (newEval.getAttribute() != null) {
+            attribute = newEval.getAttribute();
         }
-        else
-            throw new Selector.SelectorParseException("Unknown combinator: " + combinator);
+        if (combinator.equals("//")) {
+            currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.Parent(currentEval));
+        } else if (combinator.equals("/")) {
+            currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
+        } else if (combinator.equals("|")) {
+            currentEval = new CombiningEvaluator.Or(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
+        }
+        evals.add(currentEval);
 
-        if (replaceRightMost)
-            ((CombiningEvaluator.Or) rootEval).replaceRightMostEvaluator(currentEval);
-        else rootEval = currentEval;
-        evals.add(rootEval);
     }
 
     private String consumeSubQuery() {
@@ -114,10 +85,14 @@ public class XPathParser {
     }
 
     private void findElements() {
-        if (tq.matchChomp("#")) {
-
-        } else // unhandled
+        if (tq.matchesWord()) {
+            byTag();
+        } else if (tq.matchChomp("[@")) {
+            byAttribute();
+        } else {
+            // unhandled
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
+        }
 
     }
 
