@@ -31,4 +31,11 @@ public class XPathEvaluator {
         return new XElements(elements,attribute);
     }
 
+    public Evaluator getEvaluator() {
+        return evaluator;
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
 }
