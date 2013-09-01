@@ -9,15 +9,18 @@ XPath selector based on Jsoup.
 ```java
     @Test
     public void testSelect() {
-        String html = "<html><div><a href='https://github.com'>github.com</a></div></html>";
+
+        String html = "<html><div><a href='https://github.com'>github.com</a></div>" +
+                "<table><tr><td>a</td><td>b</td></tr></table></html>";
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//a/@href").get();
+        String result = Xsoup.compile("//a/@href").evaluate(document).get();
         Assert.assertEquals("https://github.com", result);
 
-        result = Xsoup.compile("//a/@href").evaluate(document).get();
-        Assert.assertEquals("https://github.com", result);
+        List<String> list = Xsoup.compile("//tr/td/text()").evaluate(document).list();
+        Assert.assertEquals("a", list.get(0));
+        Assert.assertEquals("b", list.get(1));
     }
 ```
 
