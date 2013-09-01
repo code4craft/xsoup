@@ -1,5 +1,7 @@
 Xsoup
 ----
+[![Build Status](https://travis-ci.org/code4craft/xsoup.png?branch=master)](https://travis-ci.org/code4craft/xsoup)
+
 XPath selector for Jsoup.
 
 >Under developing yet!

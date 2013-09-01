@@ -98,7 +98,8 @@ public class XPathParser {
     }
 
     private void byNth(){
-
+        String nth = tq.chompBalanced('[', ']');
+        evals.add(new Evaluator.IsNthOfType(0,Integer.parseInt(nth)));
     }
 
     private void byTag() {
