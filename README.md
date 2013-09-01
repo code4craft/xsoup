@@ -126,31 +126,33 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
 
 ### Function supported:
 
+In Xsoup, we use some function (maybe not in Standard XPath 1.0):
+
 <table>
     <tr>
         <td width="100">Expression</td>
         <td width="100">Description</td>
-        <td>Support</td>
+        <td>Standard XPath</td>
     </tr>
     <tr>
         <td width="100">text(n)</td>
         <td width="100">nth text content of element(0 for all)</td>
-        <td>yes</td>
+        <td>text() only</td>
     </tr>
         <tr>
         <td width="100">allText()</td>
         <td width="100">text including children</td>
-        <td>yes</td>
+        <td>not support</td>
     </tr>
     <tr>
         <td width="100">html()</td>
         <td width="100">innerhtml of element</td>
-        <td>yes</td>
+        <td>not support</td>
     </tr>
     <tr>
         <td width="100">outerHtml()</td>
         <td width="100">outerHtml of element</td>
-        <td>yes</td>
+        <td>not support</td>
     </tr>
     <tr>
         <td width="100">regex(expr)</td>
@@ -170,7 +172,27 @@ These syntax are extended only in Xsoup (for convenience in extracting HTML):
         <td>Support</td>
     </tr>
     <tr>
+        <td>attribute value not equals</td>
+        <td>[@key!=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
         <td>attribute value start with</td>
+        <td>[@key~=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute value end with</td>
+        <td>[@key$=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute value contains</td>
+        <td>[@key*=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute value match regex</td>
         <td>[@key~=value]</td>
         <td>yes</td>
     </tr>

@@ -56,24 +56,18 @@ public class XsoupTest {
         Assert.assertNull(result);
 
         result = Xsoup.select(document, "//div[@id=test]").get();
-        Assert.assertEquals("<div id=\"test\">\n" +
+        String expectedDiv = "<div id=\"test\">\n" +
+                " aaa\n" +
                 " <div>\n" +
                 "  <a href=\"https://github.com\">github.com</a>\n" +
                 " </div>\n" +
-                "</div>", result);
+                "</div>";
+        Assert.assertEquals(expectedDiv, result);
 
         result = Xsoup.select(document, "//div[@id='test']").get();
-        Assert.assertEquals("<div id=\"test\">\n" +
-                " <div>\n" +
-                "  <a href=\"https://github.com\">github.com</a>\n" +
-                " </div>\n" +
-                "</div>", result);
+        Assert.assertEquals(expectedDiv, result);
         result = Xsoup.select(document, "//div[@id=\"test\"]").get();
-        Assert.assertEquals("<div id=\"test\">\n" +
-                " <div>\n" +
-                "  <a href=\"https://github.com\">github.com</a>\n" +
-                " </div>\n" +
-                "</div>", result);
+        Assert.assertEquals(expectedDiv, result);
     }
 
     @Test
@@ -157,6 +151,13 @@ public class XsoupTest {
 
         String result = Xsoup.select(document, "//*[@id~=te]/text()").get();
         Assert.assertEquals("aaa",result);
+        result = Xsoup.select(document, "//*[@id$=st]/text()").get();
+        Assert.assertEquals("aaa",result);
+        result = Xsoup.select(document, "//*[@id*=es]/text()").get();
+        Assert.assertEquals("aaa",result);
+        result = Xsoup.select(document, "//*[@id~='tes[t]+']/text()").get();
+        Assert.assertEquals("aaa",result);
+
         result = Xsoup.select(document, "//*[@id~=te]/allText()").get();
         Assert.assertEquals("aaa github.com",result);
     }
