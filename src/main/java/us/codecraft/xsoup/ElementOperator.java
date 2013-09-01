@@ -1,9 +1,11 @@
 package us.codecraft.xsoup;
 
+import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -101,12 +103,44 @@ public abstract class ElementOperator {
 
         private String attribute;
 
+        private int group;
+
         public Regex(String expr) {
             super(expr);
+            this.pattern = Pattern.compile(expr);
         }
 
-        protected void parse(String expr) {
-            //todo
+        public Regex(String expr, String attribute) {
+            super("@" + attribute + ":" + expr);
+            this.attribute = attribute;
+            this.pattern = Pattern.compile(expr);
         }
+
+        public Regex(String expr, String attribute, int group) {
+            super("@" + attribute + ":" + expr + "[" + group + "]");
+            this.attribute = attribute;
+            this.pattern = Pattern.compile(expr);
+            this.group = group;
+        }
+
+        @Override
+        public String operate(Element element) {
+            Matcher matcher = pattern.matcher(getSource(element));
+            if (matcher.find()) {
+                return matcher.group(group);
+            }
+            return null;
+        }
+
+        protected String getSource(Element element) {
+            if (attribute == null) {
+                return element.outerHtml();
+            } else {
+                String attr = element.attr(attribute);
+                Validate.notNull(attr, "Attribute " + attribute + " of " + element + " is not exist!");
+                return attr;
+            }
+        }
+
     }
 }

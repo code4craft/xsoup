@@ -459,8 +459,16 @@ public class XTokenQueue {
             Validate.isTrue(str.endsWith(quote), "Quote" + " for " + str + " is incomplete!");
             str = str.substring(1, str.length() - 1);
         }
-        Validate.isFalse(str.contains("'") || str.contains("\""), "Invalid quotes for " + str);
         return str;
+    }
+
+    public static List<String> trimQuotes(List<String> strs) {
+        Validate.isTrue(strs != null);
+        List<String> list = new ArrayList<String>();
+        for (String str : strs) {
+            list.add(trimQuotes(str));
+        }
+        return list;
     }
 
     public String consumeToUnescaped(String str) {

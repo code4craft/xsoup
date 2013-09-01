@@ -166,4 +166,19 @@ public class XsoupTest {
         Assert.assertEquals("aaa github.com",result);
     }
 
+    @Test
+    public void testRegex() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//*[@id~=te]/regex('gi\\w+ub')").get();
+        Assert.assertEquals("github",result);
+
+        result = Xsoup.select(document, "//a/regex('@href','.*gi\\w+ub.*')").get();
+        Assert.assertEquals("https://github.com",result);
+
+        result = Xsoup.select(document, "//a/regex('@href','.*(gi\\w+ub).*',1").get();
+        Assert.assertEquals("github",result);
+    }
+
 }

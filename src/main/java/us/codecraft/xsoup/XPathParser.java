@@ -141,9 +141,22 @@ public class XPathParser {
     }
 
     private void functionRegex(String remainder) {
-        if (remainder.startsWith("regex(")){
-            XTokenQueue newtq = new XTokenQueue(remainder);
-
+        if (remainder.startsWith("regex(")) {
+            Validate.isTrue(remainder.endsWith(")"), "Unclosed bracket for function! " + remainder);
+            List<String> params = XTokenQueue.trimQuotes(XTokenQueue.parseFuncionParams(remainder.substring("regex(".length(), remainder.length() - 1)));
+            if (params.size() == 1) {
+                elementOperator = new ElementOperator.Regex(params.get(0));
+            } else if (params.size() == 2) {
+                if (params.get(0).startsWith("@")) {
+                    elementOperator = new ElementOperator.Regex(params.get(1), params.get(0).substring(1));
+                } else {
+                    elementOperator = new ElementOperator.Regex(params.get(0), null, Integer.parseInt(params.get(1)));
+                }
+            } else if (params.size() == 3) {
+                elementOperator = new ElementOperator.Regex(params.get(1), params.get(0).substring(1), Integer.parseInt(params.get(2)));
+            } else {
+                throw new Selector.SelectorParseException("Unknown usage for regex()" + remainder);
+            }
         }
     }
 
