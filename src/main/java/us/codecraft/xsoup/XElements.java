@@ -13,17 +13,17 @@ public class XElements extends ArrayList<XElement> {
 
     private Elements elements;
 
-    private String attribute;
+    private ElementOperator elementOperator;
 
-    public XElements(Elements elements, String attribute) {
+    public XElements(Elements elements, ElementOperator elementOperator) {
         this.elements = elements;
-        this.attribute = attribute;
+        this.elementOperator = elementOperator;
         initList();
     }
 
     private void initList() {
         for (Element element : elements) {
-            this.add(new XElement(element, attribute));
+            this.add(new XElement(element, elementOperator));
         }
     }
 

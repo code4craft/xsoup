@@ -43,7 +43,7 @@ public class XsoupTest {
     }
 
     @Test
-    public void testAttribute() {
+    public void testByAttribute() {
 
         Document document = Jsoup.parse(html);
 
@@ -104,6 +104,21 @@ public class XsoupTest {
                 "</div>", result);
 
         result = Xsoup.select(document, "//body/div[2]").get();
+        Assert.assertEquals("<div>\n" +
+                " b\n" +
+                "</div>", result);
+
+    }
+
+    @Test
+    public void testAttribute() {
+
+        Document document = Jsoup.parse(htmlClass);
+
+        String result = Xsoup.select(document, "//a/@href").get();
+        Assert.assertEquals("https://github.com", result);
+
+        result = Xsoup.select(document, "//a/text()").get();
         Assert.assertEquals("<div>\n" +
                 " b\n" +
                 "</div>", result);

@@ -82,7 +82,7 @@ public class XTokenQueue {
     }
 
     public boolean matchesRegex(String seq) {
-        return Pattern.matches(seq,queue.substring(pos));
+        return Pattern.matches(seq, queue.substring(pos));
     }
 
     /**
@@ -437,6 +437,15 @@ public class XTokenQueue {
 
     public String toString() {
         return queue.substring(pos);
+    }
+
+    public boolean containsAny(String... seq) {
+        for (String s : seq) {
+            if (queue.contains(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static String trimQuotes(String str) {

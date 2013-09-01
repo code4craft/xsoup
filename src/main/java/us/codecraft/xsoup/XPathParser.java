@@ -18,7 +18,8 @@ public class XPathParser {
     private XTokenQueue tq;
     private String query;
     private List<Evaluator> evals = new ArrayList<Evaluator>();
-    private String attribute;
+    private ElementOperator elementOperator;
+    private boolean noEvalAllow = false;
 
     public XPathParser(String xpathStr) {
         this.query = xpathStr;
@@ -28,18 +29,21 @@ public class XPathParser {
     public XPathEvaluator parse() {
 
         while (!tq.isEmpty()) {
-
+            Validate.isFalse(noEvalAllow, "XPath error! No operator allowed after attribute or function!" + tq);
             if (tq.matchesAny(combinators)) {
                 combinator(tq.consumeAny(combinators));
             } else {
                 findElements();
             }
         }
+        if (noEvalAllow) {
+            return new XPathEvaluator(null, elementOperator);
+        }
 
         if (evals.size() == 1)
-            return new XPathEvaluator(evals.get(0), attribute);
+            return new XPathEvaluator(evals.get(0), elementOperator);
 
-        return new XPathEvaluator(new CombiningEvaluator.And(evals), attribute);
+        return new XPathEvaluator(new CombiningEvaluator.And(evals), elementOperator);
     }
 
     private void combinator(String combinator) {
@@ -55,14 +59,17 @@ public class XPathParser {
         String subQuery = consumeSubQuery();
         XPathEvaluator newEval = parse(subQuery);
         if (newEval.getAttribute() != null) {
-            attribute = newEval.getAttribute();
+            elementOperator = newEval.getElementOperator();
         }
-        if (combinator.equals("//")) {
-            currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.Parent(currentEval));
-        } else if (combinator.equals("/")) {
-            currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
-        } else if (combinator.equals("|")) {
-            currentEval = new CombiningEvaluator.Or(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
+        // attribute expr does not return Evaluator
+        if (newEval.getEvaluator() != null) {
+            if (combinator.equals("//")) {
+                currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.Parent(currentEval));
+            } else if (combinator.equals("/")) {
+                currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
+            } else if (combinator.equals("|")) {
+                currentEval = new CombiningEvaluator.Or(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
+            }
         }
         evals.add(currentEval);
 
@@ -84,12 +91,12 @@ public class XPathParser {
     }
 
     private void findElements() {
-        if (tq.matchesWord()) {
+        if (tq.matches("@")) {
+            consumeAttribute();
+        } else if (tq.matchesWord()) {
             byTag();
         } else if (tq.matches("[@")) {
             byAttribute();
-        } else if (tq.matchesRegex("\\[\\d+\\]")) {
-            byNth();
         } else if (tq.matchesRegex("\\[\\d+\\]")) {
             byNth();
         } else {
@@ -102,6 +109,11 @@ public class XPathParser {
     private void byNth() {
         String nth = tq.chompBalanced('[', ']');
         evals.add(new Evaluator.IsNthOfType(0, Integer.parseInt(nth)));
+    }
+
+    private void consumeAttribute() {
+        elementOperator = new ElementOperator.AttributeGetter(tq.remainder());
+        noEvalAllow = true;
     }
 
     private void byTag() {

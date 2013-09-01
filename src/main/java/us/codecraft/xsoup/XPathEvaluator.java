@@ -14,21 +14,21 @@ public class XPathEvaluator {
 
     private Evaluator evaluator;
 
-    private String attribute;
+    private ElementOperator elementOperator;
 
-    public XPathEvaluator(Evaluator evaluator, String attribute) {
+    public XPathEvaluator(Evaluator evaluator, ElementOperator elementOperator) {
         this.evaluator = evaluator;
-        this.attribute = attribute;
+        this.elementOperator = elementOperator;
     }
 
     public XElements evaluate(Element element) {
         Elements elements = Collector.collect(evaluator, element);
-        return new XElements(elements,attribute);
+        return new XElements(elements, elementOperator);
     }
 
     public XElements evaluate(String html) {
         Elements elements = Collector.collect(evaluator, Jsoup.parse(html));
-        return new XElements(elements,attribute);
+        return new XElements(elements, elementOperator);
     }
 
     public Evaluator getEvaluator() {
@@ -36,6 +36,13 @@ public class XPathEvaluator {
     }
 
     public String getAttribute() {
-        return attribute;
+        if (elementOperator == null) {
+            return null;
+        }
+        return elementOperator.toString();
+    }
+
+    public ElementOperator getElementOperator() {
+        return elementOperator;
     }
 }
