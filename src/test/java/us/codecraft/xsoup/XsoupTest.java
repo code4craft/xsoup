@@ -157,6 +157,8 @@ public class XsoupTest {
 
         String result = Xsoup.select(document, "//*[@id~=te]/text()").get();
         Assert.assertEquals("aaa",result);
+        result = Xsoup.select(document, "//*[@id~=te]/allText()").get();
+        Assert.assertEquals("aaa github.com",result);
     }
 
 }

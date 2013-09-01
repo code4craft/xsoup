@@ -49,7 +49,7 @@ public abstract class ElementOperator {
 
         @Override
         public String operate(Element element) {
-            if (expr.equals("text()")) {
+            if (expr.equals("allText()")) {
                 return element.text();
             } else if (expr.equals("html()")) {
                 return element.html();

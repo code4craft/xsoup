@@ -137,6 +137,11 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
         <td width="100">nth text content of element(0 for all)</td>
         <td>yes</td>
     </tr>
+        <tr>
+        <td width="100">allText()</td>
+        <td width="100">text including children</td>
+        <td>yes</td>
+    </tr>
     <tr>
         <td width="100">html()</td>
         <td width="100">innerhtml of element</td>
