@@ -28,7 +28,7 @@ Xsoup use Jsoup as HTML parser.
 Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/), Xsoup is much faster:
 
 	Normal HTML, size 44KB
-	XPath: "//a"	| 	CSS Selector: "a"
+	XPath: "//a"	
 	Run for 2000 times
 
 	Environment：Mac Air MD231CH/A 
