@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class XsoupTest {
 
-    private String html = "<html><body><div id='test'><div><a href=\"https://github.com\">github.com</a></div></div></body></html>";
+    private String html = "<html><body><div id='test'>aaa<div><a href=\"https://github.com\">github.com</a></div></div></body></html>";
 
     private String htmlClass = "<html><body><div class='a b c'><div><a href=\"https://github.com\">github.com</a></div></div><div>b</div></body></html>";
 
@@ -146,8 +146,17 @@ public class XsoupTest {
         List<String> list = Xsoup.select(document, "//*[@*]/html()").list();
         Assert.assertEquals("<div>\n" +
                 " <a href=\"https://github.com\">github.com</a>\n" +
-                "</div>",list.get(0));
+                "</div>", list.get(0));
         Assert.assertEquals("github.com",list.get(1));
+    }
+
+    @Test
+    public void testFuzzyValueMatch() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//*[@id~=te]/text()").get();
+        Assert.assertEquals("aaa",result);
     }
 
 }

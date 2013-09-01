@@ -133,14 +133,41 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
         <td>Support</td>
     </tr>
     <tr>
-        <td width="100">text()</td>
-        <td width="100">text content of element</td>
+        <td width="100">text(n)</td>
+        <td width="100">nth text content of element(0 for all)</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td width="100">html()</td>
+        <td width="100">innerhtml of element</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td width="100">outerHtml()</td>
+        <td width="100">outerHtml of element</td>
         <td>yes</td>
     </tr>
     <tr>
         <td width="100">regex(expr)</td>
         <td width="100">use regex to extract content</td>
         <td>todo</td>
+    </tr>
+</table>
+
+### Extended syntax:
+
+These syntax are extended only in Xsoup (for convenience in extracting HTML):
+
+<table>
+    <tr>
+        <td width="100">Name</td>
+        <td width="100">Expression</td>
+        <td>Support</td>
+    </tr>
+    <tr>
+        <td>attribute value start with</td>
+        <td>[@key~=value]</td>
+        <td>yes</td>
     </tr>
 </table>
 

@@ -6,6 +6,7 @@ import org.jsoup.select.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -125,9 +126,29 @@ public class XPathParser {
         noEvalAllow = true;
     }
 
+    private Pattern patternForText = Pattern.compile("text\\((\\d*)\\)");
+
     private void consumeFunction() {
-        elementOperator = new ElementOperator.Function(tq.remainder());
+        String remainder = tq.remainder();
+        functionText(remainder);
+        if (elementOperator == null) {
+            elementOperator = new ElementOperator.Function(remainder);
+        }
         noEvalAllow = true;
+    }
+
+    private void functionText(String remainder) {
+        Matcher matcher = patternForText.matcher(remainder);
+        if (matcher.matches()) {
+            int attributeGroup;
+            String group = matcher.group(1);
+            if (group.equals("")) {
+                attributeGroup = 0;
+            } else {
+                attributeGroup = Integer.parseInt(group);
+            }
+            elementOperator = new ElementOperator.Text(remainder, attributeGroup);
+        }
     }
 
     private void byTag() {

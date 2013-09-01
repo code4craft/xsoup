@@ -1,6 +1,8 @@
 package us.codecraft.xsoup;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 
 import java.util.regex.Pattern;
 
@@ -51,9 +53,38 @@ public abstract class ElementOperator {
                 return element.text();
             } else if (expr.equals("html()")) {
                 return element.html();
+            } else if (expr.equals("outerHtml()")) {
+                return element.outerHtml();
             } else {
                 throw new IllegalArgumentException("Unsupported function " + expr);
             }
+        }
+    }
+
+    public static class Text extends Function {
+
+        private int group;
+
+        public Text(String expr, int group) {
+            super(expr);
+            this.group = group;
+        }
+
+        @Override
+        public String operate(Element element) {
+            int index = 0;
+            StringBuilder accum = new StringBuilder();
+            for (Node node : element.childNodes()) {
+                if (node instanceof TextNode) {
+                    TextNode textNode = (TextNode) node;
+                    if (group == 0) {
+                        accum.append(textNode.text());
+                    } else if (++index == group) {
+                        return textNode.text();
+                    }
+                }
+            }
+            return accum.toString();
         }
     }
 
