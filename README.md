@@ -54,7 +54,7 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
 
 ## Syntax supported:
 
-XPath1.0:
+### XPath1.0:
 
 <table>
     <tr>
@@ -116,5 +116,25 @@ XPath1.0:
         <td>predicates</td>
         <td>price>35</td>
         <td>no</td>
+    </tr>
+</table>
+
+### Function supported:
+
+<table>
+    <tr>
+        <td width="100">Expression</td>
+        <td width="100">Description</td>
+        <td>Support</td>
+    </tr>
+    <tr>
+        <td width="100">text()</td>
+        <td width="100">text content of element</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td width="100">regex(expr)</td>
+        <td width="100">use regex to extract content</td>
+        <td>todo</td>
     </tr>
 </table>
