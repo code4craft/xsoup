@@ -10,9 +10,11 @@ import org.junit.Test;
  */
 public class XsoupTest {
 
+    private String html = "<html><body><div id='test'><div><a href=\"https://github.com\">github.com</a></div></div></body></html>";
+
     @Test
     public void testSelect() {
-        String html = "<html><div><a href=\"https://github.com\">github.com</a></div></html>";
+
 
         Document document = Jsoup.parse(html);
 
@@ -21,5 +23,18 @@ public class XsoupTest {
 
         result = Xsoup.compile("//a").evaluate(document).get();
         Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+    }
+
+    @Test
+    public void testParent() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "/html/body/div/div/a").get();
+        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+
+        result = Xsoup.select(document, "/html//div/div/a").get();
+        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+
     }
 }

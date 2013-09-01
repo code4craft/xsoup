@@ -16,6 +16,10 @@ abstract class StructuralEvaluator extends Evaluator {
         public boolean matches(Element root, Element element) {
             return root == element;
         }
+
+        public String toString() {
+            return ":root";
+        }
     }
 
     static class Has extends StructuralEvaluator {
@@ -56,9 +60,6 @@ abstract class StructuralEvaluator extends Evaluator {
         }
 
         public boolean matches(Element root, Element element) {
-            if (root == element)
-                return false;
-
             Element parent = element.parent();
             while (parent != null) {
                 if (evaluator.matches(root, parent))
@@ -79,9 +80,6 @@ abstract class StructuralEvaluator extends Evaluator {
         }
 
         public boolean matches(Element root, Element element) {
-            if (root == element)
-                return false;
-
             Element parent = element.parent();
             return parent != null && evaluator.matches(root, parent);
         }
