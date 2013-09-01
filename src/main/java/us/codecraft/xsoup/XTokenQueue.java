@@ -435,12 +435,12 @@ public class XTokenQueue {
 
     public static String trimQuotes(String str) {
         Validate.isTrue(str != null && str.length() > 0);
-        String quote = str.substring(0,1);
-        if (StringUtil.in(quote,"\"","'")){
-            Validate.isTrue(str.endsWith(quote));
-            str = str.substring(1, str.length() - 2);
+        String quote = str.substring(0, 1);
+        if (StringUtil.in(quote, "\"", "'")) {
+            Validate.isTrue(str.endsWith(quote), "Quote" + " for " + str + " is incomplete!");
+            str = str.substring(1, str.length() - 1);
         }
-        Validate.isFalse(str.contains("'")||str.contains("\""));
+        Validate.isFalse(str.contains("'") || str.contains("\""), "Invalid quotes for " + str);
         return str;
     }
 

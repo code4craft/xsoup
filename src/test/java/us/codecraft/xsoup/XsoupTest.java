@@ -58,5 +58,18 @@ public class XsoupTest {
                 " </div>\n" +
                 "</div>", result);
 
+        result = Xsoup.select(document, "//div[@id='test']").get();
+        Assert.assertEquals("<div id=\"test\">\n" +
+                " <div>\n" +
+                "  <a href=\"https://github.com\">github.com</a>\n" +
+                " </div>\n" +
+                "</div>", result);
+        result = Xsoup.select(document, "//div[@id=\"test\"]").get();
+        Assert.assertEquals("<div id=\"test\">\n" +
+                " <div>\n" +
+                "  <a href=\"https://github.com\">github.com</a>\n" +
+                " </div>\n" +
+                "</div>", result);
+
     }
 }
