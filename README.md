@@ -2,7 +2,7 @@ Xsoup
 ----
 [![Build Status](https://api.travis-ci.org/code4craft/xsoup.png?branch=master)](https://travis-ci.org/code4craft/xsoup)
 
-XPath selector for Jsoup.
+XPath selector based on Jsoup.
 
 ## Get started:
 
