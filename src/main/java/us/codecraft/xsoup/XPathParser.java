@@ -128,10 +128,19 @@ public class XPathParser {
         if (cq.isEmpty()) {
             evals.add(new Evaluator.Attribute(key));
         } else {
-            if (cq.matchChomp("="))
-                evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
-
-            else if (cq.matchChomp("!="))
+            if (cq.matchChomp("=")) {
+                //to support select one class out of all
+                if (key.equals("class")) {
+                    String className = XTokenQueue.trimQuotes(cq.remainder());
+                    if (!className.contains(" ")) {
+                        evals.add(new Evaluator.Class(className));
+                    } else {
+                        evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
+                    }
+                } else {
+                    evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
+                }
+            } else if (cq.matchChomp("!="))
                 evals.add(new Evaluator.AttributeWithValueNot(key, XTokenQueue.trimQuotes(cq.remainder())));
 
             else if (cq.matchChomp("^="))

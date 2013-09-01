@@ -12,6 +12,8 @@ public class XsoupTest {
 
     private String html = "<html><body><div id='test'><div><a href=\"https://github.com\">github.com</a></div></div></body></html>";
 
+    private String htmlClass = "<html><body><div class='a b c'><div><a href=\"https://github.com\">github.com</a></div></div></body></html>";
+
     @Test
     public void testSelect() {
 
@@ -70,6 +72,24 @@ public class XsoupTest {
                 "  <a href=\"https://github.com\">github.com</a>\n" +
                 " </div>\n" +
                 "</div>", result);
+    }
+
+    @Test
+    public void testClass() {
+
+        Document document = Jsoup.parse(htmlClass);
+
+        String result = Xsoup.select(document, "//div[@class=a]").get();
+        Assert.assertEquals("<div class=\"a b c\">\n" +
+                " <div>\n" +
+                "  <a href=\"https://github.com\">github.com</a>\n" +
+                " </div>\n" +
+                "</div>", result);
+
+        result = Xsoup.select(document, "//div[@class=d]").get();
+        Assert.assertNull(result);
 
     }
+
+
 }
