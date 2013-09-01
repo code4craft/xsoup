@@ -93,6 +93,8 @@ public class XPathParser {
     private void findElements() {
         if (tq.matches("@")) {
             consumeAttribute();
+        } else if (tq.matchesRegex("\\w+\\(.*\\)")) {
+            consumeFunction();
         } else if (tq.matchesWord()) {
             byTag();
         } else if (tq.matches("[@")) {
@@ -113,6 +115,11 @@ public class XPathParser {
 
     private void consumeAttribute() {
         elementOperator = new ElementOperator.AttributeGetter(tq.remainder());
+        noEvalAllow = true;
+    }
+
+    private void consumeFunction() {
+        elementOperator = new ElementOperator.Function(tq.remainder());
         noEvalAllow = true;
     }
 

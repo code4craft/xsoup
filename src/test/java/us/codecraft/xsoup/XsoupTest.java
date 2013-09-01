@@ -119,9 +119,7 @@ public class XsoupTest {
         Assert.assertEquals("https://github.com", result);
 
         result = Xsoup.select(document, "//a/text()").get();
-        Assert.assertEquals("<div>\n" +
-                " b\n" +
-                "</div>", result);
+        Assert.assertEquals("github.com", result);
 
     }
 

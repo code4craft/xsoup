@@ -26,7 +26,7 @@ public abstract class ElementOperator {
 
         public AttributeGetter(String expr) {
             super(expr);
-            if (expr.startsWith("@")){
+            if (expr.startsWith("@")) {
                 attribute = expr.substring(1);
             }
         }
@@ -34,6 +34,22 @@ public abstract class ElementOperator {
         @Override
         public String operate(Element element) {
             return element.attr(attribute);
+        }
+    }
+
+    public static class Function extends ElementOperator {
+
+        public Function(String expr) {
+            super(expr);
+        }
+
+        @Override
+        public String operate(Element element) {
+            if (expr.equals("text()")) {
+                return element.text();
+            } else {
+                throw new IllegalArgumentException("Unsupported function " + expr);
+            }
         }
     }
 }
