@@ -4,8 +4,6 @@ Xsoup
 
 XPath selector for Jsoup.
 
->Under developing yet!
-
 ## Get started:
 
 ```java
@@ -23,9 +21,11 @@ XPath selector for Jsoup.
     }
 ```
 
-## Why:
+## Performance:
 
-Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/),Jsoup is much faster:
+Xsoup use Jsoup as HTML parser. 
+
+Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](http://htmlcleaner.sourceforge.net/), Xsoup is much faster:
 
 	Normal HTML, size 44KB
 	XPath: "//a"	| 	CSS Selector: "a"
@@ -37,7 +37,7 @@ Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlclea
 <table>
     <tr>
         <td width="100">Operation</td>
-        <td width="100">Jsoup</td>
+        <td width="100">Xsoup</td>
         <td>HtmlCleaner</td>
     </tr>
     <tr>
@@ -47,9 +47,74 @@ Compare with another XPath selector for HTML [**`HtmlCleaner`**](http://htmlclea
     </tr>
     <tr>
         <td>select</td>
-        <td>99(ms)</td>
+        <td>95(ms)</td>
         <td>380(ms)</td>
     </tr>
 </table>
 
-So I try to apply XPath selector to Jsoup for better performance!
+## Syntax supported:
+
+XPath1.0:
+
+<table>
+    <tr>
+        <td width="100">Name</td>
+        <td width="100">Expression</td>
+        <td>Support</td>
+    </tr>
+    <tr>
+        <td>nodename</td>
+        <td>nodename</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>immediate parent</td>
+        <td>/</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>parent</td>
+        <td>//</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute</td>
+        <td>[@key=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>nth child</td>
+        <td>tag[n]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute</td>
+        <td>/@key</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>wildcard in tagname</td>
+        <td>/*</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>function</td>
+        <td>function()</td>
+        <td>part</td>
+    </tr>
+    <tr>
+        <td>or</td>
+        <td>a | b</td>
+        <td>no</td>
+    </tr>
+    <tr>
+        <td>parent in path</td>
+        <td>. or ..</td>
+        <td>no</td>
+    </tr>
+    <tr>
+        <td>predicates</td>
+        <td>price>35</td>
+        <td>no</td>
+    </tr>
+</table>
