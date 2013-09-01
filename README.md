@@ -138,3 +138,7 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
         <td>todo</td>
     </tr>
 </table>
+
+## License
+
+MIT License, see file `LICENSE`
