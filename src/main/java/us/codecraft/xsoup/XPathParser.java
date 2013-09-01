@@ -93,6 +93,8 @@ public class XPathParser {
     private void findElements() {
         if (tq.matches("@")) {
             consumeAttribute();
+        } else if (tq.matches("*")) {
+            allElements();
         } else if (tq.matchesRegex("\\w+\\(.*\\)")) {
             consumeFunction();
         } else if (tq.matchesWord()) {
@@ -106,6 +108,11 @@ public class XPathParser {
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
         }
 
+    }
+
+    private void allElements() {
+        tq.consume();
+        evals.add(new Evaluator.AllElements());
     }
 
     private void byNth() {

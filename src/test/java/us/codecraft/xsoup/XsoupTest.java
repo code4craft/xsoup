@@ -121,7 +121,26 @@ public class XsoupTest {
         result = Xsoup.select(document, "//a/text()").get();
         Assert.assertEquals("github.com", result);
 
+        result = Xsoup.select(document, "//div[@class=a]/html()").get();
+        Assert.assertEquals("<div>\n" +
+                " <a href=\"https://github.com\">github.com</a>\n" +
+                "</div>", result);
+
     }
 
+    @Test
+    public void testWildcard() {
+
+        Document document = Jsoup.parse(htmlClass);
+
+        String result = Xsoup.select(document, "//*[@href]/@href").get();
+        Assert.assertEquals("https://github.com", result);
+
+        result = Xsoup.select(document, "//*[@class=a]/html()").get();
+        Assert.assertEquals("<div>\n" +
+                " <a href=\"https://github.com\">github.com</a>\n" +
+                "</div>", result);
+
+    }
 
 }
