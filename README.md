@@ -147,6 +147,12 @@ In Xsoup, we use some function (maybe not in Standard XPath 1.0):
         <td width="100">text including children</td>
         <td>not support</td>
     </tr>
+    </tr>
+        <tr>
+        <td width="100">tidyText()</td>
+        <td width="100">text including children, well formatted</td>
+        <td>not support</td>
+    </tr>
     <tr>
         <td width="100">html()</td>
         <td width="100">innerhtml of element</td>

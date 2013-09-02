@@ -1,5 +1,6 @@
 package us.codecraft.xsoup;
 
+import org.jsoup.examples.HtmlToPlainText;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -53,6 +54,8 @@ public abstract class ElementOperator {
         public String operate(Element element) {
             if (expr.equals("allText()")) {
                 return element.text();
+            } else if (expr.equals("tidyText()")) {
+                return new HtmlToPlainText().getPlainText(element);
             } else if (expr.equals("html()")) {
                 return element.html();
             } else if (expr.equals("outerHtml()")) {
