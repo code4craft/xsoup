@@ -206,7 +206,7 @@ public class XPathParser {
                     if (!className.contains(" ")) {
                         evals.add(new Evaluator.Class(className));
                     } else {
-                        evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
+                        evals.add(new Evaluator.AttributeWithValue(key, className));
                     }
                 } else {
                     evals.add(new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder())));
