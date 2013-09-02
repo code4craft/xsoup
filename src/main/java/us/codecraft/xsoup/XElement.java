@@ -3,6 +3,8 @@ package us.codecraft.xsoup;
 import org.jsoup.nodes.Element;
 
 /**
+ * XPath result.
+ *
  * @author code4crafter@gmail.com
  */
 public class XElement {

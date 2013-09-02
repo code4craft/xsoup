@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * XPath results.
+ *
  * @author code4crafter@gmail.com
  */
 public class XElements extends ArrayList<XElement> {
