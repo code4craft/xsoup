@@ -38,4 +38,7 @@ public class XElement {
          return get();
     }
 
+    public Element getElement() {
+        return element;
+    }
 }

@@ -52,4 +52,8 @@ public class XElements extends ArrayList<XElement> {
     public String toString() {
         return get();
     }
+
+    public Elements getElements() {
+        return elements;
+    }
 }
