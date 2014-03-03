@@ -210,3 +210,6 @@ These XPath syntax are extended only in Xsoup (for convenience in extracting HTM
 ## License
 
 MIT License, see file `LICENSE`
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/code4craft/xsoup/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
