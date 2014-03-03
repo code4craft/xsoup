@@ -1,11 +1,14 @@
 package us.codecraft.xsoup;
 
-import junit.framework.Assert;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 /**
  * @author code4crafter@gmail.com
@@ -25,11 +28,11 @@ public class XsoupTest {
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.compile("//a/@href").evaluate(document).get();
-        Assert.assertEquals("https://github.com", result);
+        assertEquals("https://github.com", result);
 
         List<String> list = Xsoup.compile("//tr/td/text()").evaluate(document).list();
-        Assert.assertEquals("a", list.get(0));
-        Assert.assertEquals("b", list.get(1));
+        assertEquals("a", list.get(0));
+        assertEquals("b", list.get(1));
     }
 
     @Test
@@ -38,13 +41,13 @@ public class XsoupTest {
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.select(document, "/html/body/div/div/a").get();
-        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+        assertEquals("<a href=\"https://github.com\">github.com</a>", result);
 
         result = Xsoup.select(document, "/html//div/div/a").get();
-        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+        assertEquals("<a href=\"https://github.com\">github.com</a>", result);
 
         result = Xsoup.select(document, "/html/div/div/a").get();
-        Assert.assertNull(result);
+        assertNull(result);
 
     }
 
@@ -54,10 +57,10 @@ public class XsoupTest {
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.select(document, "//a[@href]").get();
-        Assert.assertEquals("<a href=\"https://github.com\">github.com</a>", result);
+        assertEquals("<a href=\"https://github.com\">github.com</a>", result);
 
         result = Xsoup.select(document, "//a[@id]").get();
-        Assert.assertNull(result);
+        assertNull(result);
 
         result = Xsoup.select(document, "//div[@id=test]").get();
         String expectedDiv = "<div id=\"test\">\n" +
@@ -66,12 +69,12 @@ public class XsoupTest {
                 "  <a href=\"https://github.com\">github.com</a>\n" +
                 " </div>\n" +
                 "</div>";
-        Assert.assertEquals(expectedDiv, result);
+        assertEquals(expectedDiv, result);
 
         result = Xsoup.select(document, "//div[@id='test']").get();
-        Assert.assertEquals(expectedDiv, result);
+        assertEquals(expectedDiv, result);
         result = Xsoup.select(document, "//div[@id=\"test\"]").get();
-        Assert.assertEquals(expectedDiv, result);
+        assertEquals(expectedDiv, result);
     }
 
     @Test
@@ -80,14 +83,14 @@ public class XsoupTest {
         Document document = Jsoup.parse(htmlClass);
 
         String result = Xsoup.select(document, "//div[@class=a]").get();
-        Assert.assertEquals("<div class=\"a b c\">\n" +
+        assertEquals("<div class=\"a b c\">\n" +
                 " <div>\n" +
                 "  <a href=\"https://github.com\">github.com</a>\n" +
                 " </div>\n" +
                 "</div>", result);
 
         result = Xsoup.select(document, "//div[@class=d]").get();
-        Assert.assertNull(result);
+        assertNull(result);
 
     }
 
@@ -97,14 +100,14 @@ public class XsoupTest {
         Document document = Jsoup.parse(htmlClass);
 
         String result = Xsoup.select(document, "//body/div[1]").get();
-        Assert.assertEquals("<div class=\"a b c\">\n" +
+        assertEquals("<div class=\"a b c\">\n" +
                 " <div>\n" +
                 "  <a href=\"https://github.com\">github.com</a>\n" +
                 " </div>\n" +
                 "</div>", result);
 
         result = Xsoup.select(document, "//body/div[2]").get();
-        Assert.assertEquals("<div>\n" +
+        assertEquals("<div>\n" +
                 " b\n" +
                 "</div>", result);
 
@@ -116,13 +119,13 @@ public class XsoupTest {
         Document document = Jsoup.parse(htmlClass);
 
         String result = Xsoup.select(document, "//a/@href").get();
-        Assert.assertEquals("https://github.com", result);
+        assertEquals("https://github.com", result);
 
         result = Xsoup.select(document, "//a/text()").get();
-        Assert.assertEquals("github.com", result);
+        assertEquals("github.com", result);
 
         result = Xsoup.select(document, "//div[@class=a]/html()").get();
-        Assert.assertEquals("<div>\n" +
+        assertEquals("<div>\n" +
                 " <a href=\"https://github.com\">github.com</a>\n" +
                 "</div>", result);
 
@@ -134,18 +137,18 @@ public class XsoupTest {
         Document document = Jsoup.parse(htmlClass);
 
         String result = Xsoup.select(document, "//*[@href]/@href").get();
-        Assert.assertEquals("https://github.com", result);
+        assertEquals("https://github.com", result);
 
         result = Xsoup.select(document, "//*[@class=a]/html()").get();
-        Assert.assertEquals("<div>\n" +
+        assertEquals("<div>\n" +
                 " <a href=\"https://github.com\">github.com</a>\n" +
                 "</div>", result);
 
         List<String> list = Xsoup.select(document, "//*[@*]/html()").list();
-        Assert.assertEquals("<div>\n" +
+        assertEquals("<div>\n" +
                 " <a href=\"https://github.com\">github.com</a>\n" +
                 "</div>", list.get(0));
-        Assert.assertEquals("github.com",list.get(1));
+        assertEquals("github.com", list.get(1));
     }
 
     @Test
@@ -154,16 +157,16 @@ public class XsoupTest {
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.select(document, "//*[@id~=te]/text()").get();
-        Assert.assertEquals("aaa",result);
+        assertEquals("aaa", result);
         result = Xsoup.select(document, "//*[@id$=st]/text()").get();
-        Assert.assertEquals("aaa",result);
+        assertEquals("aaa", result);
         result = Xsoup.select(document, "//*[@id*=es]/text()").get();
-        Assert.assertEquals("aaa",result);
+        assertEquals("aaa", result);
         result = Xsoup.select(document, "//*[@id~='tes[t]+']/text()").get();
-        Assert.assertEquals("aaa",result);
+        assertEquals("aaa", result);
 
         result = Xsoup.select(document, "//*[@id~=te]/allText()").get();
-        Assert.assertEquals("aaa github.com",result);
+        assertEquals("aaa github.com", result);
     }
 
     @Test
@@ -172,13 +175,24 @@ public class XsoupTest {
         Document document = Jsoup.parse(html);
 
         String result = Xsoup.select(document, "//*[@id~=te]/regex('gi\\w+ub')").get();
-        Assert.assertEquals("github",result);
+        assertEquals("github", result);
 
         result = Xsoup.select(document, "//a/regex('@href','.*gi\\w+ub.*')").get();
-        Assert.assertEquals("https://github.com",result);
+        assertEquals("https://github.com", result);
 
         result = Xsoup.select(document, "//a/regex('@href','.*(gi\\w+ub).*',1").get();
-        Assert.assertEquals("github",result);
+        assertEquals("github", result);
+    }
+
+    @Ignore
+    @Test
+    public void testContains() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//div[@contains(@id,'te')]").get();
+        assertEquals("<div class='a b c'><div><a href=\"https://github.com\">github.com</a></div></div>", result);
+
     }
 
 }

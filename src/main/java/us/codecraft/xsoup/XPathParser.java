@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * Parser of XPath.
+ *
  * @author code4crafter@gmail.com
  */
 public class XPathParser {
@@ -123,6 +124,7 @@ public class XPathParser {
     }
 
     private void consumeAttribute() {
+        tq.consume("@");
         elementOperator = new ElementOperator.AttributeGetter(tq.remainder());
         noEvalAllow = true;
     }
@@ -136,7 +138,17 @@ public class XPathParser {
             functionRegex(remainder);
         }
         if (elementOperator == null) {
-            elementOperator = new ElementOperator.Function(remainder);
+            if (remainder.equals("allText()") || remainder.equals("text()")) {
+                elementOperator = new ElementOperator.AllText();
+            } else if (remainder.equals("tidyText()")) {
+                elementOperator = new ElementOperator.TidyText();
+            } else if (remainder.equals("html()")) {
+                elementOperator = new ElementOperator.Html();
+            } else if (remainder.equals("outerHtml()")) {
+                elementOperator = new ElementOperator.OuterHtml();
+            } else {
+                throw new IllegalArgumentException("Unsupported function " + remainder);
+            }
         }
         noEvalAllow = true;
     }
@@ -171,7 +183,7 @@ public class XPathParser {
             } else {
                 attributeGroup = Integer.parseInt(group);
             }
-            elementOperator = new ElementOperator.Text(remainder, attributeGroup);
+            elementOperator = new ElementOperator.GroupedText(attributeGroup);
         }
     }
 

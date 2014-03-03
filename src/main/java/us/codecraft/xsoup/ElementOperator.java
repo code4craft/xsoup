@@ -16,64 +16,84 @@ import java.util.regex.Pattern;
  */
 public abstract class ElementOperator {
 
-    public ElementOperator(String expr) {
-        this.expr = expr;
-    }
-
-    protected String expr;
-
     public abstract String operate(Element element);
-
-    @Override
-    public String toString() {
-        return expr;
-    }
 
     public static class AttributeGetter extends ElementOperator {
 
         private String attribute;
 
-        public AttributeGetter(String expr) {
-            super(expr);
-            if (expr.startsWith("@")) {
-                attribute = expr.substring(1);
-            }
+        public AttributeGetter(String attribute) {
+            this.attribute = attribute;
         }
 
         @Override
         public String operate(Element element) {
             return element.attr(attribute);
         }
+
+        @Override
+        public String toString() {
+            return "@" + attribute;
+        }
     }
 
-    public static class Function extends ElementOperator {
-
-        public Function(String expr) {
-            super(expr);
-        }
+    public static class AllText extends ElementOperator {
 
         @Override
         public String operate(Element element) {
-            if (expr.equals("allText()")) {
-                return element.text();
-            } else if (expr.equals("tidyText()")) {
-                return new HtmlToPlainText().getPlainText(element);
-            } else if (expr.equals("html()")) {
-                return element.html();
-            } else if (expr.equals("outerHtml()")) {
-                return element.outerHtml();
-            } else {
-                throw new IllegalArgumentException("Unsupported function " + expr);
-            }
+            return element.text();
+        }
+
+        @Override
+        public String toString() {
+            return "allText()";
         }
     }
 
-    public static class Text extends Function {
+    public static class Html extends ElementOperator {
+
+        @Override
+        public String operate(Element element) {
+            return element.html();
+        }
+
+        @Override
+        public String toString() {
+            return "html()";
+        }
+    }
+
+    public static class OuterHtml extends ElementOperator {
+
+        @Override
+        public String operate(Element element) {
+            return element.outerHtml();
+        }
+
+        @Override
+        public String toString() {
+            return "outerHtml()";
+        }
+    }
+
+    public static class TidyText extends ElementOperator {
+
+        @Override
+        public String operate(Element element) {
+            return new HtmlToPlainText().getPlainText(element);
+        }
+
+        @Override
+        public String toString() {
+            return "tidyText()";
+        }
+    }
+
+    public static class GroupedText extends ElementOperator {
 
         private int group;
 
-        public Text(String expr, int group) {
-            super(expr);
+        public GroupedText(int group) {
             this.group = group;
         }
 
@@ -93,6 +113,11 @@ public abstract class ElementOperator {
             }
             return accum.toString();
         }
+
+        @Override
+        public String toString() {
+            return String.format("text(%d)", group);
+        }
     }
 
     /**
@@ -102,7 +127,7 @@ public abstract class ElementOperator {
      * regex(@attr,'.*')
      * regex(@attr,'.*',group)
      */
-    public static class Regex extends Function {
+    public static class Regex extends ElementOperator {
 
         private Pattern pattern;
 
@@ -111,18 +136,15 @@ public abstract class ElementOperator {
         private int group;
 
         public Regex(String expr) {
-            super(expr);
             this.pattern = Pattern.compile(expr);
         }
 
         public Regex(String expr, String attribute) {
-            super("@" + attribute + ":" + expr);
             this.attribute = attribute;
             this.pattern = Pattern.compile(expr);
         }
 
         public Regex(String expr, String attribute, int group) {
-            super("@" + attribute + ":" + expr + "[" + group + "]");
             this.attribute = attribute;
             this.pattern = Pattern.compile(expr);
             this.group = group;
@@ -147,5 +169,11 @@ public abstract class ElementOperator {
             }
         }
 
+        @Override
+        public String toString() {
+            return String.format("regex(%s%s%s)",
+                    attribute != null ? "@" + attribute + "," : "", pattern.toString(),
+                    group != 0 ? "," + group : "");
+        }
     }
 }
