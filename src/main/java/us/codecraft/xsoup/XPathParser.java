@@ -314,10 +314,10 @@ public class XPathParser {
 
     private String chompEqualValue(XTokenQueue cq) {
         String value;
-        if (cq.matches("'")) {
-            value = cq.chompBalanced('\'', '\'');
-        } else if (cq.matches("\"")) {
-            value = cq.chompBalanced('"', '"');
+        if (cq.matchChomp("'")) {
+            value = cq.chompTo("'");
+        } else if (cq.matchChomp("\"")) {
+            value = cq.chompTo("\"");
         } else if (cq.containsAny(" ")) {
             value = cq.chompTo(" ");
         } else {
