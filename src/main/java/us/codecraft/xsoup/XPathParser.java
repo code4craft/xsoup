@@ -129,10 +129,8 @@ public class XPathParser {
             } else {
                 if (operation == Operation.AND) {
                     evaluator = new CombiningEvaluator.And(pop(), evaluator);
-                    push(evaluator);
                 } else {
                     mergeOr();
-                    push(evaluator);
                 }
                 push(evaluator);
             }

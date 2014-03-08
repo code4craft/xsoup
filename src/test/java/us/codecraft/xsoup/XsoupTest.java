@@ -183,8 +183,8 @@ public class XsoupTest {
         result = Xsoup.select(document, "//*[(@id=te or @id=test) and @id=test]/text()").get();
         assertEquals("aaa", result);
 
-        result = Xsoup.select(document, "//*[@id=te or (@id=test and @id=test)]/text()").get();
-        assertEquals("aaa", result);
+        result = Xsoup.select(document, "//*[@id=te or (@id=test and @id=id)]/text()").get();
+        assertNull(result);
     }
 
     @Test
