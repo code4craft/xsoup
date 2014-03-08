@@ -180,6 +180,7 @@ public class XPathParser {
             }
             functionQueue.consumeWhitespace();
         }
+        evaluatorStack.mergeOr();
         return evaluatorStack.peek();
     }
 

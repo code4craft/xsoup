@@ -63,16 +63,10 @@ abstract class CombiningEvaluator extends Evaluator {
     }
 
     static final class Or extends CombiningEvaluator {
-        /**
-         * Create a new Or evaluator. The initial evaluators are ANDed together and used as the first clause of the OR.
-         * @param evaluators initial OR clause (these are wrapped into an AND evaluator).
-         */
+
         Or(Collection<Evaluator> evaluators) {
             super();
-            if (evaluators.size() > 1)
-                this.evaluators.add(new CombiningEvaluator.And(evaluators));
-            else // 0 or 1
-                this.evaluators.addAll(evaluators);
+            this.evaluators.addAll(evaluators);
         }
 
         Or(Evaluator... evaluators) {

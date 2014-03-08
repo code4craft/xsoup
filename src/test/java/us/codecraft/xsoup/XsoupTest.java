@@ -177,6 +177,9 @@ public class XsoupTest {
         String result = Xsoup.select(document, "//*[@id=te or @id=test]/text()").get();
         assertEquals("aaa", result);
 
+        result = Xsoup.select(document, "//*[@id=test or @id=te]/text()").get();
+        assertEquals("aaa", result);
+
         result = Xsoup.select(document, "//*[@id=te and @id=test]/text()").get();
         assertNull(result);
 
