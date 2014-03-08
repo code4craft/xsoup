@@ -170,6 +170,24 @@ public class XsoupTest {
     }
 
     @Test
+    public void testLogicOperation() {
+
+        Document document = Jsoup.parse(html);
+
+        String result = Xsoup.select(document, "//*[@id=te or @id=test]/text()").get();
+        assertEquals("aaa", result);
+
+        result = Xsoup.select(document, "//*[@id=te and @id=test]/text()").get();
+        assertNull(result);
+
+        result = Xsoup.select(document, "//*[(@id=te or @id=test) and @id=test]/text()").get();
+        assertEquals("aaa", result);
+
+        result = Xsoup.select(document, "//*[@id=te or (@id=test and @id=test)]/text()").get();
+        assertEquals("aaa", result);
+    }
+
+    @Test
     public void testRegex() {
 
         Document document = Jsoup.parse(html);

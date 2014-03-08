@@ -6,6 +6,7 @@ import org.jsoup.select.Selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,12 +103,10 @@ public class XPathParser {
             consumeOperatorFunction();
         } else if (tq.matchesWord()) {
             byTag();
-        } else if (tq.matches("[@")) {
-            evals.add(byAttribute(tq.chompBalanced('[', ']')));
         } else if (tq.matchesRegex("\\[\\d+\\]")) {
             byNth();
-        } else if (tq.matchesRegex("\\[\\w+\\(.*\\)\\]")) {
-            consumeEvaluatorFunction();
+        } else if (tq.matches("[")) {
+            evals.add(consumeEvaluatorFunction(tq.chompBalanced('[', ']')));
         } else {
             // unhandled
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
@@ -115,9 +114,75 @@ public class XPathParser {
 
     }
 
-    private Evaluator consumeEvaluatorFunction() {
-        XTokenQueue functionQueue = new XTokenQueue(tq.chompBalanced('[', ']'));
-        return null;
+    /**
+     * EvaluatorStack for logic calculate.
+     * Priority: AND > OR, Regardless of bracket.
+     * <p/>
+     * Calculate AND immediately.
+     * Store evaluator with OR, until there are two evaluator in stack, then calculate it.
+     */
+    static class EvaluatorStack extends Stack<Evaluator> {
+
+        public void calc(Evaluator evaluator, Operation operation) {
+            if (size() == 0) {
+                push(evaluator);
+            } else {
+                if (operation == Operation.AND) {
+                    evaluator = new CombiningEvaluator.And(pop(), evaluator);
+                    push(evaluator);
+                } else {
+                    mergeOr();
+                    push(evaluator);
+                }
+                push(evaluator);
+            }
+        }
+
+        public void mergeOr() {
+            if (size() >= 2) {
+                Evaluator pop1 = pop();
+                Evaluator pop2 = pop();
+                Evaluator tempEvaluator = new CombiningEvaluator.Or(pop2, pop1);
+                push(tempEvaluator);
+            }
+        }
+    }
+
+    enum Operation {
+        AND, OR;
+    }
+
+    private Evaluator consumeEvaluatorFunction(String queue) {
+        XTokenQueue functionQueue = new XTokenQueue(queue);
+        EvaluatorStack evaluatorStack = new EvaluatorStack();
+        Operation currentOperation = null;
+        functionQueue.consumeWhitespace();
+        while (!functionQueue.isEmpty()) {
+            if (functionQueue.matchChomp("and")) {
+                currentOperation = Operation.AND;
+            } else if (functionQueue.matchChomp("or")) {
+                currentOperation = Operation.OR;
+            } else {
+                if (currentOperation == null && evaluatorStack.size() > 0) {
+                    throw new IllegalArgumentException(String.format("Need AND/OR between two predicate! %s", functionQueue.remainder()));
+                }
+                Evaluator evaluator;
+                if (functionQueue.matches("(")) {
+                    evaluator = consumeEvaluatorFunction(functionQueue.chompBalanced('(', ')'));
+                } else if (functionQueue.matches("@")) {
+                    evaluator = byAttribute(functionQueue);
+                } else if (functionQueue.matchesRegex("\\w+")) {
+                    evaluator = byAttribute(functionQueue);
+                } else {
+                    throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, functionQueue.remainder());
+                }
+                evaluatorStack.calc(evaluator, currentOperation);
+                //consume operator
+                currentOperation = null;
+            }
+            functionQueue.consumeWhitespace();
+        }
+        return evaluatorStack.peek();
     }
 
     private void allElements() {
@@ -203,8 +268,7 @@ public class XPathParser {
         evals.add(new Evaluator.Tag(tagName.trim().toLowerCase()));
     }
 
-    private Evaluator byAttribute(String exp) {
-        XTokenQueue cq = new XTokenQueue(exp); // content queue
+    private Evaluator byAttribute(XTokenQueue cq) {
         cq.matchChomp("@");
         String key = cq.consumeToAny("=", "!=", "^=", "$=", "*=", "~="); // eq, not, start, end, contain, match, (no val)
         Validate.notEmpty(key);
@@ -218,35 +282,50 @@ public class XPathParser {
             }
         } else {
             if (cq.matchChomp("=")) {
+                String value = chompEqualValue(cq);
                 //to support select one class out of all
                 if (key.equals("class")) {
-                    String className = XTokenQueue.trimQuotes(cq.remainder());
+                    String className = XTokenQueue.trimQuotes(value);
                     if (!className.contains(" ")) {
                         evaluator = new Evaluator.Class(className);
                     } else {
                         evaluator = new Evaluator.AttributeWithValue(key, className);
                     }
                 } else {
-                    evaluator = new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(cq.remainder()));
+                    evaluator = new Evaluator.AttributeWithValue(key, XTokenQueue.trimQuotes(value));
                 }
             } else if (cq.matchChomp("!="))
-                evaluator = new Evaluator.AttributeWithValueNot(key, XTokenQueue.trimQuotes(cq.remainder()));
+                evaluator = new Evaluator.AttributeWithValueNot(key, XTokenQueue.trimQuotes(chompEqualValue(cq)));
 
             else if (cq.matchChomp("^="))
-                evaluator = new Evaluator.AttributeWithValueStarting(key, XTokenQueue.trimQuotes(cq.remainder()));
+                evaluator = new Evaluator.AttributeWithValueStarting(key, XTokenQueue.trimQuotes(chompEqualValue(cq)));
 
             else if (cq.matchChomp("$="))
-                evaluator = new Evaluator.AttributeWithValueEnding(key, XTokenQueue.trimQuotes(cq.remainder()));
+                evaluator = new Evaluator.AttributeWithValueEnding(key, XTokenQueue.trimQuotes(chompEqualValue(cq)));
 
             else if (cq.matchChomp("*="))
-                evaluator = new Evaluator.AttributeWithValueContaining(key, XTokenQueue.trimQuotes(cq.remainder()));
+                evaluator = new Evaluator.AttributeWithValueContaining(key, XTokenQueue.trimQuotes(chompEqualValue(cq)));
 
             else if (cq.matchChomp("~="))
-                evaluator = new Evaluator.AttributeWithValueMatching(key, Pattern.compile(XTokenQueue.trimQuotes(cq.remainder())));
+                evaluator = new Evaluator.AttributeWithValueMatching(key, Pattern.compile(XTokenQueue.trimQuotes(chompEqualValue(cq))));
             else
-                throw new Selector.SelectorParseException("Could not parse attribute query '%s': unexpected token at '%s'", query, cq.remainder());
+                throw new Selector.SelectorParseException("Could not parse attribute query '%s': unexpected token at '%s'", query, chompEqualValue(cq));
         }
         return evaluator;
+    }
+
+    private String chompEqualValue(XTokenQueue cq) {
+        String value;
+        if (cq.matches("'")) {
+            value = cq.chompBalanced('\'', '\'');
+        } else if (cq.matches("\"")) {
+            value = cq.chompBalanced('"', '"');
+        } else if (cq.containsAny(" ")) {
+            value = cq.chompTo(" ");
+        } else {
+            value = cq.remainder();
+        }
+        return value;
     }
 
     public static XPathEvaluator parse(String xpathStr) {
