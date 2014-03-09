@@ -2,7 +2,6 @@ package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -205,14 +204,18 @@ public class XsoupTest {
         assertEquals("github", result);
     }
 
-    @Ignore
     @Test
     public void testContains() {
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//div[@contains(@id,'te')]").get();
-        assertEquals("<div class='a b c'><div><a href=\"https://github.com\">github.com</a></div></div>", result);
+        String result = Xsoup.select(document, "//div[contains(@id,'te')]").get();
+        assertEquals("<div id=\"test\">\n" +
+                " aaa\n" +
+                " <div>\n" +
+                "  <a href=\"https://github.com\">github.com</a>\n" +
+                " </div>\n" +
+                "</div>", result);
 
     }
 

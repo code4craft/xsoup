@@ -170,8 +170,8 @@ public class XPathParser {
                     evaluator = consumePredicates(predicatesQueue.chompBalanced('(', ')'));
                 } else if (predicatesQueue.matches("@")) {
                     evaluator = byAttribute(predicatesQueue);
-                } else if (predicatesQueue.matchesRegex("\\w+")) {
-                    evaluator = byAttribute(predicatesQueue);
+                } else if (predicatesQueue.matchesRegex("\\w+.*")) {
+                    evaluator = byFunction(predicatesQueue);
                 } else {
                     throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, predicatesQueue.remainder());
                 }
@@ -183,6 +183,20 @@ public class XPathParser {
         }
         evaluatorStack.mergeOr();
         return evaluatorStack.peek();
+    }
+
+    private Evaluator byFunction(XTokenQueue predicatesQueue) {
+        if (predicatesQueue.matchChomp("contains")) {
+            String paramString = predicatesQueue.chompBalanced('(', ')');
+            List<String> params = XTokenQueue.trimQuotes(XTokenQueue.parseFuncionParams(paramString));
+            Validate.isTrue(params.size() == 2, String.format("Error argument \"%s\" of contains", paramString));
+            if (params.get(0).startsWith("@")) {
+                return new Evaluator.AttributeWithValueContaining(params.get(0).substring(1), params.get(1));
+            }
+        } else {
+            throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, predicatesQueue.remainder());
+        }
+        return null;
     }
 
     private void allElements() {
