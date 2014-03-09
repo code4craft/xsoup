@@ -39,6 +39,7 @@ public class XPathParser {
             } else {
                 findElements();
             }
+            tq.consumeWhitespace();
         }
         if (noEvalAllow) {
             return new XPathEvaluator(null, elementOperator);
@@ -106,7 +107,7 @@ public class XPathParser {
         } else if (tq.matchesRegex("\\[\\d+\\]")) {
             byNth();
         } else if (tq.matches("[")) {
-            evals.add(consumeEvaluatorFunction(tq.chompBalanced('[', ']')));
+            evals.add(consumePredicates(tq.chompBalanced('[', ']')));
         } else {
             // unhandled
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
@@ -150,35 +151,35 @@ public class XPathParser {
         AND, OR;
     }
 
-    private Evaluator consumeEvaluatorFunction(String queue) {
-        XTokenQueue functionQueue = new XTokenQueue(queue);
+    private Evaluator consumePredicates(String queue) {
+        XTokenQueue predicatesQueue = new XTokenQueue(queue);
         EvaluatorStack evaluatorStack = new EvaluatorStack();
         Operation currentOperation = null;
-        functionQueue.consumeWhitespace();
-        while (!functionQueue.isEmpty()) {
-            if (functionQueue.matchChomp("and")) {
+        predicatesQueue.consumeWhitespace();
+        while (!predicatesQueue.isEmpty()) {
+            if (predicatesQueue.matchChomp("and")) {
                 currentOperation = Operation.AND;
-            } else if (functionQueue.matchChomp("or")) {
+            } else if (predicatesQueue.matchChomp("or")) {
                 currentOperation = Operation.OR;
             } else {
                 if (currentOperation == null && evaluatorStack.size() > 0) {
-                    throw new IllegalArgumentException(String.format("Need AND/OR between two predicate! %s", functionQueue.remainder()));
+                    throw new IllegalArgumentException(String.format("Need AND/OR between two predicate! %s", predicatesQueue.remainder()));
                 }
                 Evaluator evaluator;
-                if (functionQueue.matches("(")) {
-                    evaluator = consumeEvaluatorFunction(functionQueue.chompBalanced('(', ')'));
-                } else if (functionQueue.matches("@")) {
-                    evaluator = byAttribute(functionQueue);
-                } else if (functionQueue.matchesRegex("\\w+")) {
-                    evaluator = byAttribute(functionQueue);
+                if (predicatesQueue.matches("(")) {
+                    evaluator = consumePredicates(predicatesQueue.chompBalanced('(', ')'));
+                } else if (predicatesQueue.matches("@")) {
+                    evaluator = byAttribute(predicatesQueue);
+                } else if (predicatesQueue.matchesRegex("\\w+")) {
+                    evaluator = byAttribute(predicatesQueue);
                 } else {
-                    throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, functionQueue.remainder());
+                    throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, predicatesQueue.remainder());
                 }
                 evaluatorStack.calc(evaluator, currentOperation);
                 //consume operator
                 currentOperation = null;
             }
-            functionQueue.consumeWhitespace();
+            predicatesQueue.consumeWhitespace();
         }
         evaluatorStack.mergeOr();
         return evaluatorStack.peek();
