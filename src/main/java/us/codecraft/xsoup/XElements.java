@@ -41,7 +41,7 @@ public class XElements extends ArrayList<XElement> {
         List<String> resultStrings = new ArrayList<String>();
         for (XElement xElement : this) {
             String text = xElement.get();
-            if (text!=null){
+            if (text != null) {
                 resultStrings.add(text);
             }
         }
