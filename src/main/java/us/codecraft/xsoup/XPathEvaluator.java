@@ -1,49 +1,14 @@
 package us.codecraft.xsoup;
 
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Collector;
-import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
 
 /**
  * @author code4crafter@gmail.com
  */
-public class XPathEvaluator {
+public interface XPathEvaluator {
 
-    private Evaluator evaluator;
+    XElements evaluate(Element element);
 
-    private ElementOperator elementOperator;
+    XElements evaluate(String html);
 
-    public XPathEvaluator(Evaluator evaluator, ElementOperator elementOperator) {
-        this.evaluator = evaluator;
-        this.elementOperator = elementOperator;
-    }
-
-    public XElements evaluate(Element element) {
-        Elements elements = Collector.collect(evaluator, element);
-        return new XElements(elements, elementOperator);
-    }
-
-    public XElements evaluate(String html) {
-        Document document = Jsoup.parse(html);
-        return evaluate(document);
-    }
-
-    public Evaluator getEvaluator() {
-        return evaluator;
-    }
-
-    public String getAttribute() {
-        if (elementOperator == null) {
-            return null;
-        }
-        return elementOperator.toString();
-    }
-
-    public ElementOperator getElementOperator() {
-        return elementOperator;
-    }
 }

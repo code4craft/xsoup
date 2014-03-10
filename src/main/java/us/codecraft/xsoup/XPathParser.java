@@ -30,7 +30,7 @@ public class XPathParser {
         this.tq = new XTokenQueue(xpathStr);
     }
 
-    public XPathEvaluator parse() {
+    public DefaultXPathEvaluator parse() {
 
         while (!tq.isEmpty()) {
             Validate.isFalse(noEvalAllow, "XPath error! No operator allowed after attribute or function!" + tq);
@@ -42,13 +42,13 @@ public class XPathParser {
             tq.consumeWhitespace();
         }
         if (noEvalAllow) {
-            return new XPathEvaluator(null, elementOperator);
+            return new DefaultXPathEvaluator(null, elementOperator);
         }
 
         if (evals.size() == 1)
-            return new XPathEvaluator(evals.get(0), elementOperator);
+            return new DefaultXPathEvaluator(evals.get(0), elementOperator);
 
-        return new XPathEvaluator(new CombiningEvaluator.And(evals), elementOperator);
+        return new DefaultXPathEvaluator(new CombiningEvaluator.And(evals), elementOperator);
     }
 
     private void combinator(String combinator) {
@@ -62,7 +62,7 @@ public class XPathParser {
         }
         evals.clear();
         String subQuery = consumeSubQuery();
-        XPathEvaluator newEval = parse(subQuery);
+        DefaultXPathEvaluator newEval = parse(subQuery);
         if (newEval.getAttribute() != null) {
             elementOperator = newEval.getElementOperator();
         }
@@ -342,7 +342,7 @@ public class XPathParser {
         return value;
     }
 
-    public static XPathEvaluator parse(String xpathStr) {
+    public static DefaultXPathEvaluator parse(String xpathStr) {
         XPathParser xPathParser = new XPathParser(xpathStr);
         return xPathParser.parse();
     }
