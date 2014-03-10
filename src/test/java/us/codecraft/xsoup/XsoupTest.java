@@ -2,7 +2,6 @@ package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -219,23 +218,21 @@ public class XsoupTest {
 
     }
 
-    @Ignore
     @Test
     public void testCombingXPath() {
 
-        String html = "<html><div id='test2'>aa<a href='https://github.com'>github.com</a></div>";
+        String html2 = "<html><div id='test2'>aa<a href='https://github.com'>github.com</a></div>";
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test']/text() ").get();
+        String result = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test2']/text()").get();
         assertThat(result).isEqualTo("aaa");
 
-        result = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test']/text() ").get();
+        result = Xsoup.select(html2, "//div[@id='test']/text() | //div[@id='test2']/text()").get();
         assertThat(result).isEqualTo("aa");
 
-        result = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test']/text() ").get();
-        assertThat(result).isEqualTo("aa");
-
+        List<String> resultList = Xsoup.select(html + html2, "//div[@id='test']/text() | //div[@id='test2']/text()").list();
+        assertThat(resultList).contains("aaa", "aa");
     }
 
 }

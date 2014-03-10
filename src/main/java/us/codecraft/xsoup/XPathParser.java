@@ -17,7 +17,11 @@ import java.util.regex.Pattern;
  */
 public class XPathParser {
 
-    private String[] combinators = new String[]{"//", "/", "|"};
+    private String[] COMBINATORS = new String[]{"//", "/", "|"};
+
+    private String[] HIERARCHY_COMBINATORS = new String[]{"//", "/", "|"};
+
+    private String OR_COMBINATOR = "|";
 
     private XTokenQueue tq;
     private String query;
@@ -30,17 +34,29 @@ public class XPathParser {
         this.tq = new XTokenQueue(xpathStr);
     }
 
-    public DefaultXPathEvaluator parse() {
+    public XPathEvaluator parse() {
 
         while (!tq.isEmpty()) {
             Validate.isFalse(noEvalAllow, "XPath error! No operator allowed after attribute or function!" + tq);
-            if (tq.matchesAny(combinators)) {
-                combinator(tq.consumeAny(combinators));
+            if (tq.matchChomp(OR_COMBINATOR)) {
+                tq.consumeWhitespace();
+                return combineXPathEvaluator(tq.remainder());
+            } else if (tq.matchesAny(HIERARCHY_COMBINATORS)) {
+                combinator(tq.consumeAny(HIERARCHY_COMBINATORS));
             } else {
                 findElements();
             }
             tq.consumeWhitespace();
         }
+        return collectXPathEvaluator();
+    }
+
+    private XPathEvaluator combineXPathEvaluator(String subQuery) {
+        XPathEvaluator xPathEvaluator = collectXPathEvaluator();
+        return new CombingXPathEvaluator(xPathEvaluator, parse(subQuery));
+    }
+
+    private XPathEvaluator collectXPathEvaluator() {
         if (noEvalAllow) {
             return new DefaultXPathEvaluator(null, elementOperator);
         }
@@ -62,8 +78,12 @@ public class XPathParser {
         }
         evals.clear();
         String subQuery = consumeSubQuery();
-        DefaultXPathEvaluator newEval = parse(subQuery);
-        if (newEval.getAttribute() != null) {
+        XPathEvaluator tmpEval = parse(subQuery);
+        if (!(tmpEval instanceof DefaultXPathEvaluator)) {
+            throw new IllegalArgumentException(String.format("Error XPath in %s", subQuery));
+        }
+        DefaultXPathEvaluator newEval = (DefaultXPathEvaluator) tmpEval;
+        if (newEval.getElementOperator() != null) {
             elementOperator = newEval.getElementOperator();
         }
         // attribute expr does not return Evaluator
@@ -72,8 +92,6 @@ public class XPathParser {
                 currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.Parent(currentEval));
             } else if (combinator.equals("/")) {
                 currentEval = new CombiningEvaluator.And(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
-            } else if (combinator.equals("|")) {
-                currentEval = new CombiningEvaluator.Or(newEval.getEvaluator(), new StructuralEvaluator.ImmediateParent(currentEval));
             }
         }
         evals.add(currentEval);
@@ -83,14 +101,16 @@ public class XPathParser {
     private String consumeSubQuery() {
         StringBuilder sq = new StringBuilder();
         while (!tq.isEmpty()) {
+            tq.consumeWhitespace();
             if (tq.matches("("))
                 sq.append("(").append(tq.chompBalanced('(', ')')).append(")");
             else if (tq.matches("["))
                 sq.append("[").append(tq.chompBalanced('[', ']')).append("]");
-            else if (tq.matchesAny(combinators))
+            else if (tq.matchesAny(COMBINATORS))
                 break;
-            else
+            else if (!tq.isEmpty()) {
                 sq.append(tq.consume());
+            }
         }
         return sq.toString();
     }
@@ -100,7 +120,7 @@ public class XPathParser {
             consumeAttribute();
         } else if (tq.matches("*")) {
             allElements();
-        } else if (tq.matchesRegex("\\w+\\(.*\\)")) {
+        } else if (tq.matchesRegex("\\w+\\(.*\\).*")) {
             consumeOperatorFunction();
         } else if (tq.matchesWord()) {
             byTag();
@@ -218,7 +238,7 @@ public class XPathParser {
     private Pattern patternForText = Pattern.compile("text\\((\\d*)\\)");
 
     private void consumeOperatorFunction() {
-        String remainder = tq.remainder();
+        String remainder = tq.consumeToAny(COMBINATORS);
         if (remainder.startsWith("text(")) {
             functionText(remainder);
         } else if (remainder.startsWith("regex(")) {
@@ -342,7 +362,7 @@ public class XPathParser {
         return value;
     }
 
-    public static DefaultXPathEvaluator parse(String xpathStr) {
+    public static XPathEvaluator parse(String xpathStr) {
         XPathParser xPathParser = new XPathParser(xpathStr);
         return xPathParser.parse();
     }
