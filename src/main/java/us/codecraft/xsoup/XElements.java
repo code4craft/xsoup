@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author code4crafter@gmail.com
  */
-public interface XElements extends List<XElement> {
+public interface XElements {
 
     String get();
 
