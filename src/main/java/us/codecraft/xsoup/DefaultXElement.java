@@ -23,18 +23,12 @@ public class DefaultXElement implements XElement {
         return get(elementOperator);
     }
 
-    @Override
-    public String get(ElementOperator elementOperator){
+    protected String get(ElementOperator elementOperator){
         if (elementOperator == null) {
             return element.toString();
         } else {
             return elementOperator.operate(element);
         }
-    }
-
-    @Override
-    public String get(String attribute){
-       return get(new ElementOperator.AttributeGetter(attribute));
     }
 
     public String toString() {

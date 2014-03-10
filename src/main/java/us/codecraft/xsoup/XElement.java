@@ -6,11 +6,8 @@ import org.jsoup.nodes.Element;
  * @author code4crafter@gmail.com
  */
 public interface XElement {
+
     String get();
-
-    String get(ElementOperator elementOperator);
-
-    String get(String attribute);
 
     Element getElement();
 }
