@@ -29,8 +29,7 @@ public class XsoupTest {
         assertThat(result).isEqualTo("https://github.com");
 
         List<String> list = Xsoup.compile("//tr/td/text()").evaluate(document).list();
-        assertThat(list.get(0)).isEqualTo("a");
-        assertThat(list.get(1)).isEqualTo("b");
+        assertThat(list).contains("a","b");
     }
 
     @Test
