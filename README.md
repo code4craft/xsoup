@@ -113,7 +113,7 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
     <tr>
         <td>or</td>
         <td>a | b</td>
-        <td>no</td>
+        <td>yes since 0.2.0</td>
     </tr>
     <tr>
         <td>parent in path</td>
@@ -124,6 +124,11 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
         <td>predicates</td>
         <td>price>35</td>
         <td>no</td>
+    </tr>
+    <tr>
+        <td>predicates logic</td>
+        <td>@class=a or @class=b</td>
+        <td>yes since 0.2.0</td>
     </tr>
 </table>
 
