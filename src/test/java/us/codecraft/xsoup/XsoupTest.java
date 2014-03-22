@@ -108,6 +108,11 @@ public class XsoupTest {
                 " b\n" +
                 "</div>");
 
+        String htmlSVG = "<div><svg>1</svg><svg>2</svg></div>";
+        result = Xsoup.select(htmlSVG, "//div/svg[1]/text()").get();
+        assertThat(result).isEqualTo("1");
+        result = Xsoup.select(htmlSVG, "//div/svg[2]/text()").get();
+        assertThat(result).isEqualTo("2");
     }
 
     @Test
