@@ -288,6 +288,17 @@ public class XTokenQueue {
         return data;
     }
 
+    public String chompBalancedQuotes() {
+        String quote = consumeAny(quotes);
+        if (quote.length() == 0) {
+            return "";
+        }
+        StringBuilder accum = new StringBuilder(quote);
+        accum.append(consumeToUnescaped(quote));
+        accum.append(consume());
+        return accum.toString();
+    }
+
     /**
      * Pulls a balanced string off the queue. E.g. if queue is "(one (two) three) four", (,) will return "one (two) three",
      * and leave " four" on the queue. Unbalanced openers and closers can be escaped (with \). Those escapes will be left

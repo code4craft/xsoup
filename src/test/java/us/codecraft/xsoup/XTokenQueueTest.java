@@ -1,9 +1,10 @@
 package us.codecraft.xsoup;
 
-import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author code4crafter@gmail.com
@@ -11,18 +12,34 @@ import java.util.List;
 public class XTokenQueueTest {
 
     @Test
-    public void testParseFuncionParams(){
+    public void testParseFunctionParams(){
         List<String> list = XTokenQueue.parseFuncionParams("a,b,c");
-        Assert.assertTrue(list.size()==3);
+        assertThat(list).hasSize(3);
 
         list = XTokenQueue.parseFuncionParams("'a,b',c");
-        Assert.assertTrue(list.size()==2);
+        assertThat(list).hasSize(2);
 
         list = XTokenQueue.parseFuncionParams("'a,\\'b',c");
-        Assert.assertTrue(list.size()==2);
+        assertThat(list).hasSize(2);
 
         list = XTokenQueue.parseFuncionParams("@a,1,c");
-        Assert.assertTrue(list.size()==3);
+        assertThat(list).hasSize(3);
+
+    }
+
+    @Test
+    public void testChompBalancedQuotes() throws Exception {
+        XTokenQueue xTokenQueue = new XTokenQueue("\"aaaaa\"");
+        String chomp = xTokenQueue.chompBalancedQuotes();
+        assertThat(chomp).isEqualTo("\"aaaaa\"");
+
+        xTokenQueue = new XTokenQueue("\"aaaaa\"aabb");
+        chomp = xTokenQueue.chompBalancedQuotes();
+        assertThat(chomp).isEqualTo("\"aaaaa\"");
+
+        xTokenQueue = new XTokenQueue("a\"aaaaa\"aabb");
+        chomp = xTokenQueue.chompBalancedQuotes();
+        assertThat(chomp).isEqualTo("");
 
     }
 }

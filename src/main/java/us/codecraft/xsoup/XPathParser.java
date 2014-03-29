@@ -17,11 +17,15 @@ import java.util.regex.Pattern;
  */
 public class XPathParser {
 
-    private String[] COMBINATORS = new String[]{"//", "/", "|"};
+    private static final String[] COMBINATORS = new String[]{"//", "/", "|"};
 
-    private String[] HIERARCHY_COMBINATORS = new String[]{"//", "/", "|"};
+    private static final String[] ESCAPED_QUOTES = new String[]{"\\\"", "\\'"};
 
-    private String OR_COMBINATOR = "|";
+    private static final String[] QUOTES = new String[]{"\"", "'"};
+
+    private static final String[] HIERARCHY_COMBINATORS = new String[]{"//", "/", "|"};
+
+    private static final String OR_COMBINATOR = "|";
 
     private XTokenQueue tq;
     private String query;
@@ -106,6 +110,10 @@ public class XPathParser {
                 sq.append("(").append(tq.chompBalanced('(', ')')).append(")");
             else if (tq.matches("["))
                 sq.append("[").append(tq.chompBalanced('[', ']')).append("]");
+            else if (tq.matchesAny(ESCAPED_QUOTES))
+                sq.append(tq.consumeAny(ESCAPED_QUOTES));
+            else if (tq.matchesAny(QUOTES))
+                sq.append(tq.chompBalancedQuotes());
             else if (tq.matchesAny(COMBINATORS))
                 break;
             else if (!tq.isEmpty()) {
@@ -238,7 +246,7 @@ public class XPathParser {
     private Pattern patternForText = Pattern.compile("text\\((\\d*)\\)");
 
     private void consumeOperatorFunction() {
-        String remainder = tq.consumeToAny(COMBINATORS);
+        String remainder = consumeSubQuery();
         if (remainder.startsWith("text(")) {
             functionText(remainder);
         } else if (remainder.startsWith("regex(")) {

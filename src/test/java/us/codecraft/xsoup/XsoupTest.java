@@ -239,4 +239,16 @@ public class XsoupTest {
         assertThat(resultList).contains("aaa", "aa");
     }
 
+    @Test
+    public void testSeparatorInQuotes() {
+
+        String html2 = "<html><div id='test2'>/list/12345<a href='https://github.com'>github.com</a></div>";
+
+        Document document = Jsoup.parse(html2);
+
+        String result = Xsoup.select(document, "//div[@id='test2']/regex(\"/list/(\\d+)\",1)").get();
+        assertThat(result).isEqualTo("12345");
+
+    }
+
 }
