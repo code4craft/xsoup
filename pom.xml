@@ -32,10 +32,6 @@
         <url>git@github.com:code4craft/xsoup.git</url>
       <tag>xsoup-0.2.0</tag>
   </scm>
-    ```java
-@ExtractBy("//div[@class='BlogStat']/regex('\\d+-\\d+-\\d+\\s+\\d+:\\d+')")
-private Date date;
-```
    <licenses>
     <license>
         <name>The MIT License</name>

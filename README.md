@@ -59,21 +59,78 @@ Compare with another most used XPath selector for HTML - [**`HtmlCleaner`**](htt
 
 ### XPath1.0:
 
-| Name	 | Expression	| Support|
-| ------------ | ---------|--|
-|nodename	| nodename |yes |
-|immediate parent |	/ |	yes|
-|parent	| //	|yes|
-|attribute |	[@key=value] |	yes|
-|nth child |	tag[n]	 |yes |
-| attribute |	/@key |	yes |
-|wildcard in tagname	| /*	 | yes|
-| wildcard in attribute|	/[@*]	| yes
-|function |	function()	| yes |
-| or |	a \| b	 | yes since 0.2.0
-| parent in path |	. or .. |	no |
-| predicates	| price>35 |	no |
-|predicates logic |	@class=a or @class=b |	yes since 0.2.0|
+<table>
+    <tr>
+        <td width="100">Name</td>
+        <td width="100">Expression</td>
+        <td>Support</td>
+    </tr>
+    <tr>
+        <td>nodename</td>
+        <td>nodename</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>immediate parent</td>
+        <td>/</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>parent</td>
+        <td>//</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute</td>
+        <td>[@key=value]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>nth child</td>
+        <td>tag[n]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>attribute</td>
+        <td>/@key</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>wildcard in tagname</td>
+        <td>/*</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>wildcard in attribute</td>
+        <td>/[@*]</td>
+        <td>yes</td>
+    </tr>
+    <tr>
+        <td>function</td>
+        <td>function()</td>
+        <td>part</td>
+    </tr>
+    <tr>
+        <td>or</td>
+        <td>a | b</td>
+        <td>yes since 0.2.0</td>
+    </tr>
+    <tr>
+        <td>parent in path</td>
+        <td>. or ..</td>
+        <td>no</td>
+    </tr>
+    <tr>
+        <td>predicates</td>
+        <td>price>35</td>
+        <td>no</td>
+    </tr>
+    <tr>
+        <td>predicates logic</td>
+        <td>@class=a or @class=b</td>
+        <td>yes since 0.2.0</td>
+    </tr>
+</table>
 
 ### Function supported:
 
