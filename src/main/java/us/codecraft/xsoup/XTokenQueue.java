@@ -23,6 +23,10 @@ public class XTokenQueue {
 
     private static final String[] quotes = {"\"", "'"};
 
+    private static final char singleQuote = '\'';
+
+    private static final char doubleQuote = '"';
+
     /**
      * Create a new TokenQueue.
      *
@@ -296,6 +300,40 @@ public class XTokenQueue {
         StringBuilder accum = new StringBuilder(quote);
         accum.append(consumeToUnescaped(quote));
         accum.append(consume());
+        return accum.toString();
+    }
+
+    public String chompBalancedNotInQuotes(char open, char close) {
+        StringBuilder accum = new StringBuilder();
+        int depth = 0;
+        char last = 0;
+        boolean inQuotes = false;
+        Character quote = null;
+
+        do {
+            if (isEmpty()) break;
+            Character c = consume();
+            if (last == 0 || last != ESC) {
+                if (!inQuotes) {
+                    if (c.equals(singleQuote) || c.equals(doubleQuote)) {
+                        inQuotes = true;
+                        quote = c;
+                    } else if (c.equals(open))
+                        depth++;
+                    else if (c.equals(close))
+                        depth--;
+                } else {
+                    if (c.equals(quote)) {
+                        inQuotes = false;
+                    }
+                }
+
+            }
+
+            if (depth > 0 && last != 0)
+                accum.append(c); // don't include the outer match pair in the return
+            last = c;
+        } while (depth > 0);
         return accum.toString();
     }
 

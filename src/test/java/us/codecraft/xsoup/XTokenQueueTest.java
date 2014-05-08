@@ -42,4 +42,20 @@ public class XTokenQueueTest {
         assertThat(chomp).isEqualTo("");
 
     }
+
+    @Test
+    public void testChompBalancedInQuotes() throws Exception {
+        XTokenQueue xTokenQueue = new XTokenQueue("(\")\")");
+        String chomp = xTokenQueue.chompBalancedNotInQuotes('(',')');
+        assertThat(chomp).isEqualTo("\")\"");
+
+        xTokenQueue = new XTokenQueue("(\"')\")");
+        chomp = xTokenQueue.chompBalancedNotInQuotes('(',')');
+        assertThat(chomp).isEqualTo("\"')\"");
+
+        xTokenQueue = new XTokenQueue("(''')')");
+        chomp = xTokenQueue.chompBalancedNotInQuotes('(',')');
+        assertThat(chomp).isEqualTo("''')'");
+
+    }
 }
