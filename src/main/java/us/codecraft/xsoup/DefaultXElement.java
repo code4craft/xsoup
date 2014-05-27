@@ -39,4 +39,9 @@ public class DefaultXElement implements XElement {
     public Element getElement() {
         return element;
     }
+
+    @Override
+    public boolean hasAttribute() {
+        return elementOperator != null;
+    }
 }

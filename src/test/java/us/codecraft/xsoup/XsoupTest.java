@@ -30,6 +30,8 @@ public class XsoupTest {
 
         List<String> list = Xsoup.compile("//tr/td/text()").evaluate(document).list();
         assertThat(list).contains("a","b");
+        assertThat(Xsoup.compile("//tr/td/text()").evaluate(document).hasAttribute()).isTrue();
+
     }
 
     @Test
@@ -53,10 +55,11 @@ public class XsoupTest {
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//a[@href]").get();
-        assertThat(result).isEqualTo("<a href=\"https://github.com\">github.com</a>");
+        XElements select = Xsoup.select(document, "//a[@href]");
+        assertThat(select.get()).isEqualTo("<a href=\"https://github.com\">github.com</a>");
+        assertThat(select.hasAttribute()).isFalse();
 
-        result = Xsoup.select(document, "//a[@id]").get();
+        String result = Xsoup.select(document, "//a[@id]").get();
         assertThat(result).isNull();
 
         result = Xsoup.select(document, "//div[@id=test]").get();
@@ -229,14 +232,18 @@ public class XsoupTest {
 
         Document document = Jsoup.parse(html);
 
-        String result = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test2']/text()").get();
-        assertThat(result).isEqualTo("aaa");
+        XElements select = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test2']/text()");
+        assertThat(select.get()).isEqualTo("aaa");
+        assertThat(select.hasAttribute()).isTrue();
 
-        result = Xsoup.select(html2, "//div[@id='test']/text() | //div[@id='test2']/text()").get();
-        assertThat(result).isEqualTo("aa");
+        select = Xsoup.select(html2, "//div[@id='test']/text() | //div[@id='test2']/text()");
+        assertThat(select.get()).isEqualTo("aa");
 
-        List<String> resultList = Xsoup.select(html + html2, "//div[@id='test']/text() | //div[@id='test2']/text()").list();
-        assertThat(resultList).contains("aaa", "aa");
+        select = Xsoup.select(html + html2, "//div[@id='test']/text() | //div[@id='test2']/text()");
+        assertThat(select.list()).contains("aaa", "aa");
+
+        select = Xsoup.select(html + html2, "//div[@id='test'] | //div[@id='test2']");
+        assertThat(select.hasAttribute()).isFalse();
     }
 
     @Test
