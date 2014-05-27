@@ -14,6 +14,4 @@ public interface XElements {
     List<String> list();
 
     Elements getElements();
-
-    boolean hasAttribute();
 }

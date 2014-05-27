@@ -28,9 +28,10 @@ public class XsoupTest {
         String result = Xsoup.compile("//a/@href").evaluate(document).get();
         assertThat(result).isEqualTo("https://github.com");
 
-        List<String> list = Xsoup.compile("//tr/td/text()").evaluate(document).list();
+        XPathEvaluator xPathEvaluator = Xsoup.compile("//tr/td/text()");
+        List<String> list = xPathEvaluator.evaluate(document).list();
         assertThat(list).contains("a","b");
-        assertThat(Xsoup.compile("//tr/td/text()").evaluate(document).hasAttribute()).isTrue();
+        assertThat(xPathEvaluator.hasAttribute()).isTrue();
 
     }
 
@@ -55,9 +56,10 @@ public class XsoupTest {
 
         Document document = Jsoup.parse(html);
 
-        XElements select = Xsoup.select(document, "//a[@href]");
+        XPathEvaluator xPathEvaluator = XPathParser.parse("//a[@href]");
+        assertThat(xPathEvaluator.hasAttribute()).isFalse();
+        XElements select = xPathEvaluator.evaluate(document);
         assertThat(select.get()).isEqualTo("<a href=\"https://github.com\">github.com</a>");
-        assertThat(select.hasAttribute()).isFalse();
 
         String result = Xsoup.select(document, "//a[@id]").get();
         assertThat(result).isNull();
@@ -232,9 +234,11 @@ public class XsoupTest {
 
         Document document = Jsoup.parse(html);
 
-        XElements select = Xsoup.select(document, "//div[@id='test']/text() | //div[@id='test2']/text()");
+        XPathEvaluator xPathEvaluator = XPathParser.parse("//div[@id='test']/text() | //div[@id='test2']/text()");
+        assertThat(xPathEvaluator.hasAttribute()).isTrue();
+        XElements select = xPathEvaluator.evaluate(document);
         assertThat(select.get()).isEqualTo("aaa");
-        assertThat(select.hasAttribute()).isTrue();
+
 
         select = Xsoup.select(html2, "//div[@id='test']/text() | //div[@id='test2']/text()");
         assertThat(select.get()).isEqualTo("aa");
@@ -242,8 +246,8 @@ public class XsoupTest {
         select = Xsoup.select(html + html2, "//div[@id='test']/text() | //div[@id='test2']/text()");
         assertThat(select.list()).contains("aaa", "aa");
 
-        select = Xsoup.select(html + html2, "//div[@id='test'] | //div[@id='test2']");
-        assertThat(select.hasAttribute()).isFalse();
+        xPathEvaluator = XPathParser.parse("//div[@id='test'] | //div[@id='test2']");
+        assertThat(xPathEvaluator.hasAttribute()).isFalse();
     }
 
     @Test

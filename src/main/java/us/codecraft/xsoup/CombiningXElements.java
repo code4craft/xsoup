@@ -50,13 +50,4 @@ public class CombiningXElements implements XElements {
         return elements;
     }
 
-    @Override
-    public boolean hasAttribute() {
-        for (XElements xElements : elementsList) {
-            if (xElements.hasAttribute()){
-                return true;
-            }
-        }
-        return false;
-    }
 }

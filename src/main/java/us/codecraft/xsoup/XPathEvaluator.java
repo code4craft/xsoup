@@ -11,4 +11,6 @@ public interface XPathEvaluator {
 
     XElements evaluate(String html);
 
+    boolean hasAttribute();
+
 }

@@ -34,6 +34,11 @@ public class DefaultXPathEvaluator implements XPathEvaluator {
         return evaluate(document);
     }
 
+    @Override
+    public boolean hasAttribute() {
+        return elementOperator != null;
+    }
+
     public Evaluator getEvaluator() {
         return evaluator;
     }

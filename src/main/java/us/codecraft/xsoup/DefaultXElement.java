@@ -40,8 +40,4 @@ public class DefaultXElement implements XElement {
         return element;
     }
 
-    @Override
-    public boolean hasAttribute() {
-        return elementOperator != null;
-    }
 }

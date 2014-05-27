@@ -37,4 +37,14 @@ public class CombingXPathEvaluator implements XPathEvaluator {
         Document document = Jsoup.parse(html);
         return evaluate(document);
     }
+
+    @Override
+    public boolean hasAttribute() {
+        for (XPathEvaluator xPathEvaluator : xPathEvaluators) {
+            if (xPathEvaluator.hasAttribute()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

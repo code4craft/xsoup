@@ -10,6 +10,4 @@ public interface XElement {
     String get();
 
     Element getElement();
-
-    boolean hasAttribute();
 }

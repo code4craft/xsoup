@@ -60,8 +60,4 @@ public class DefaultXElements extends ArrayList<XElement> implements XElements {
         return elements;
     }
 
-    @Override
-    public boolean hasAttribute() {
-        return elementOperator != null;
-    }
 }
