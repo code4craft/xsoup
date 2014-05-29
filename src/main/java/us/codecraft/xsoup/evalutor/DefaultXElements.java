@@ -1,7 +1,8 @@
-package us.codecraft.xsoup;
+package us.codecraft.xsoup.evalutor;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import us.codecraft.xsoup.element.ElementOperator;
 
 import java.util.ArrayList;
 import java.util.List;

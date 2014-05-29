@@ -2,7 +2,10 @@ package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.w3c.dom.Node;
+import us.codecraft.xsoup.element.ElementConverter;
+import us.codecraft.xsoup.element.XPathEvaluator;
+import us.codecraft.xsoup.element.XPathParser;
+import us.codecraft.xsoup.evalutor.XElements;
 
 /**
  * @author code4crafter@gmail.com

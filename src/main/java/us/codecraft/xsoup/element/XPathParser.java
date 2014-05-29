@@ -1,4 +1,4 @@
-package us.codecraft.xsoup;
+package us.codecraft.xsoup.element;
 
 import org.jsoup.helper.Validate;
 import org.jsoup.select.Evaluator;
