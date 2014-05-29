@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.element;
+package us.codecraft.xsoup.nodes;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Evaluator;

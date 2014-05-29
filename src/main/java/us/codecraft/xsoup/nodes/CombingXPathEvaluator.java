@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.element;
+package us.codecraft.xsoup.nodes;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

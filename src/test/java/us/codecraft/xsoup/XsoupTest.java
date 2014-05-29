@@ -3,8 +3,8 @@ package us.codecraft.xsoup;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
-import us.codecraft.xsoup.element.XPathEvaluator;
-import us.codecraft.xsoup.element.XPathParser;
+import us.codecraft.xsoup.nodes.XPathEvaluator;
+import us.codecraft.xsoup.nodes.XPathParser;
 import us.codecraft.xsoup.evalutor.XElements;
 
 import java.util.List;
