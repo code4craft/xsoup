@@ -14,7 +14,7 @@ public class ElementConverter {
         this.element = element;
     }
 
-    public Node convertToW3CNode(){
+    public org.w3c.dom.Element convertToW3CNode(){
         return null;
     }
 }

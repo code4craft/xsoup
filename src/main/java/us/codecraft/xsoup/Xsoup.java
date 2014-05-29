@@ -21,7 +21,7 @@ public class Xsoup {
         return XPathParser.parse(xpathStr);
     }
 
-    public static Node convert(Element element){
+    public static org.w3c.dom.Element convert(Element element){
         return new ElementConverter(element).convertToW3CNode();
     }
 
