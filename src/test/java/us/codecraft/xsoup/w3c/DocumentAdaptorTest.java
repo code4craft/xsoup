@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
@@ -26,10 +25,6 @@ public class DocumentAdaptorTest {
         XPathExpression xPathExpression = target.compile("//div/a/@href");
         String result = xPathExpression.evaluate(document);
         assertThat(result).isEqualTo("https://github.com");
-
-        xPathExpression = target.compile("//div/a");
-        Object evaluate = xPathExpression.evaluate(document, XPathConstants.NODE);
-        System.out.println(evaluate);
 
     }
 }

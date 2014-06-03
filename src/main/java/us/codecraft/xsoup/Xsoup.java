@@ -1,6 +1,7 @@
 package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import us.codecraft.xsoup.w3c.NodeAdaptors;
 import us.codecraft.xsoup.xevaluator.XElements;
@@ -30,6 +31,10 @@ public class Xsoup {
 
     public static org.w3c.dom.Element convertElement(Element element) {
         return NodeAdaptors.getElement(element);
+    }
+
+    public static org.w3c.dom.Document convertDocument(Document document) {
+        return NodeAdaptors.getDocument(document);
     }
 
 }

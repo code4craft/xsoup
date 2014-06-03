@@ -89,6 +89,11 @@ public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
     }
 
     @Override
+    public String getTextContent() throws DOMException {
+        return document.text();
+    }
+
+    @Override
     public boolean isSameNode(Node other) {
         return false;
     }

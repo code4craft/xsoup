@@ -68,11 +68,6 @@ public abstract class NodeAdaptor implements Node {
     }
 
     @Override
-    public String getTextContent() throws DOMException {
-        return null;
-    }
-
-    @Override
     public void setTextContent(String textContent) throws DOMException {
         throw new UnsupportedOperationException();
     }

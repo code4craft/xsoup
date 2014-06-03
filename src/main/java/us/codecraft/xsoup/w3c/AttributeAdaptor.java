@@ -131,6 +131,11 @@ public class AttributeAdaptor extends NodeAdaptor implements Attr {
     }
 
     @Override
+    public String getTextContent() throws DOMException {
+        return attribute.getValue();
+    }
+
+    @Override
     public boolean isSameNode(Node other) {
         return false;
     }
