@@ -2,7 +2,6 @@ package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import us.codecraft.xsoup.XElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +11,13 @@ import java.util.List;
  *
  * @author code4crafter@gmail.com
  */
-public class DefaultXEvaluatorElements extends ArrayList<XElement> implements XEvaluatorElements {
+public class DefaultXElements extends ArrayList<XElement> implements XElements {
 
     private Elements elements;
 
     private ElementOperator elementOperator;
 
-    public DefaultXEvaluatorElements(Elements elements, ElementOperator elementOperator) {
+    public DefaultXElements(Elements elements, ElementOperator elementOperator) {
         this.elements = elements;
         this.elementOperator = elementOperator;
         initList();
@@ -26,7 +25,7 @@ public class DefaultXEvaluatorElements extends ArrayList<XElement> implements XE
 
     private void initList() {
         for (Element element : elements) {
-            this.add(new DefaultXEvaluatorElement(element, elementOperator));
+            this.add(new DefaultXElement(element, elementOperator));
         }
     }
 

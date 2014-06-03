@@ -7,13 +7,13 @@ import org.jsoup.nodes.Element;
  *
  * @author code4crafter@gmail.com
  */
-public class DefaultXEvaluatorElement implements XEvaluatorElement {
+public class DefaultXElement implements XElement {
 
     private Element element;
 
     private ElementOperator elementOperator;
 
-    public DefaultXEvaluatorElement(Element element, ElementOperator elementOperator) {
+    public DefaultXElement(Element element, ElementOperator elementOperator) {
         this.element = element;
         this.elementOperator = elementOperator;
     }

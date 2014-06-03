@@ -2,7 +2,9 @@ package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.w3c.W3cEvaluator;
+import us.codecraft.xsoup.w3c.NodeAdaptors;
+import us.codecraft.xsoup.xevaluator.XElements;
+import us.codecraft.xsoup.xevaluator.XPathEvaluator;
 import us.codecraft.xsoup.xevaluator.XPathParser;
 
 /**
@@ -26,16 +28,8 @@ public class Xsoup {
 
     /*-------------     W3cAdaptor         --------------- */
 
-    public static XElements selectW3c(Element element, String xpathStr) {
-        return compileW3c(xpathStr).evaluate(element);
-    }
-
-    public static XElements selectW3c(String html, String xpathStr) {
-        return compileW3c(xpathStr).evaluate(Jsoup.parse(html));
-    }
-
-    public static XPathEvaluator compileW3c(String xpathStr) {
-        return new W3cEvaluator(xpathStr);
+    public static org.w3c.dom.Element convertElement(Element element) {
+        return NodeAdaptors.getElement(element);
     }
 
 }

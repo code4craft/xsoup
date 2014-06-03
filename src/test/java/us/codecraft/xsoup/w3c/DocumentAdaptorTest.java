@@ -3,7 +3,6 @@ package us.codecraft.xsoup.w3c;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import us.codecraft.xsoup.Xsoup;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -32,7 +31,5 @@ public class DocumentAdaptorTest {
         Object evaluate = xPathExpression.evaluate(document, XPathConstants.NODE);
         System.out.println(evaluate);
 
-        String s = Xsoup.compileW3c("//div").evaluate(Jsoup.parse(html)).get();
-        System.out.println(s);
     }
 }

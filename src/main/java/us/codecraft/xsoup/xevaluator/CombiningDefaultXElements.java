@@ -9,21 +9,21 @@ import java.util.List;
 /**
  * @author code4crafter@gmail.com
  */
-public class CombiningDefaultXElements implements XEvaluatorElements {
+public class CombiningDefaultXElements implements XElements {
 
-    private List<XEvaluatorElements> elementsList;
+    private List<XElements> elementsList;
 
-    public CombiningDefaultXElements(List<XEvaluatorElements> elementsList) {
+    public CombiningDefaultXElements(List<XElements> elementsList) {
         this.elementsList = elementsList;
     }
 
-    public CombiningDefaultXElements(XEvaluatorElements... elementsList) {
+    public CombiningDefaultXElements(XElements... elementsList) {
         this.elementsList = Arrays.asList(elementsList);
     }
 
     @Override
     public String get() {
-        for (XEvaluatorElements xElements : elementsList) {
+        for (XElements xElements : elementsList) {
             String result = xElements.get();
             if (result != null) {
                 return result;
@@ -35,7 +35,7 @@ public class CombiningDefaultXElements implements XEvaluatorElements {
     @Override
     public List<String> list() {
         List<String> results = new ArrayList<String>();
-        for (XEvaluatorElements xElements : elementsList) {
+        for (XElements xElements : elementsList) {
             results.addAll(xElements.list());
         }
         return results;
@@ -43,7 +43,7 @@ public class CombiningDefaultXElements implements XEvaluatorElements {
 
     public Elements getElements() {
         Elements elements = new Elements();
-        for (XEvaluatorElements xElements : elementsList) {
+        for (XElements xElements : elementsList) {
             elements.addAll(xElements.getElements());
         }
         return elements;

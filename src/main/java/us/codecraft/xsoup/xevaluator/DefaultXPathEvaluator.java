@@ -9,7 +9,7 @@ import org.jsoup.select.Evaluator;
 /**
  * @author code4crafter@gmail.com
  */
-public class DefaultXPathEvaluator implements XEvaluatorPathEvaluator {
+public class DefaultXPathEvaluator implements XPathEvaluator {
 
     private Evaluator evaluator;
 
@@ -21,9 +21,9 @@ public class DefaultXPathEvaluator implements XEvaluatorPathEvaluator {
     }
 
     @Override
-    public XEvaluatorElements evaluate(Element element) {
+    public XElements evaluate(Element element) {
         Elements elements = Collector.collect(evaluator, element);
-        return new DefaultXEvaluatorElements(elements, elementOperator);
+        return new DefaultXElements(elements, elementOperator);
     }
 
     @Override
