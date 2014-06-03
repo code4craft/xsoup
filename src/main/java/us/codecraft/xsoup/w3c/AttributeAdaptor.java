@@ -1,36 +1,78 @@
-package us.codecraft.xsoup.adaptor;
+package us.codecraft.xsoup.w3c;
 
+import org.jsoup.nodes.*;
 import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * @author code4crafer@gmail.com
  */
-public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
+public class AttributeAdaptor extends NodeAdaptor implements Attr {
 
-    private org.jsoup.nodes.Document document;
+    private Attribute attribute;
 
-    public HtmlDocumentType(org.jsoup.nodes.Document document) {
-        this.document = document;
+    private org.jsoup.nodes.Element element;
+
+    public AttributeAdaptor(Attribute attribute, org.jsoup.nodes.Element element) {
+        this.attribute = attribute;
+        this.element = element;
+    }
+
+    @Override
+    public String getName() {
+        return attribute.getKey();
+    }
+
+    @Override
+    public boolean getSpecified() {
+        return false;
+    }
+
+    @Override
+    public String getValue() {
+        return attribute.getValue();
+    }
+
+    @Override
+    public void setValue(String value) throws DOMException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Element getOwnerElement() {
+        return NodeAdaptors.getElement(element);
+    }
+
+    @Override
+    public TypeInfo getSchemaTypeInfo() {
+        return new DummyTypeInfo();
+    }
+
+    @Override
+    public boolean isId() {
+        return false;
     }
 
     @Override
     public String getNodeName() {
-        return "html";
+        return attribute.getKey();
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-        return null;
+        return attribute.getValue();
     }
 
     @Override
     public short getNodeType() {
-        return DOCUMENT_TYPE_NODE;
+        return ATTRIBUTE_NODE;
     }
 
     @Override
     public Node getParentNode() {
-        return null;
+        return new ElementAdaptor(element);
     }
 
     @Override
@@ -65,7 +107,7 @@ public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
 
     @Override
     public Document getOwnerDocument() {
-        return NodeAdaptors.getDocument(document);
+        return new DocumentAdaptor(element.ownerDocument());
     }
 
     @Override
@@ -75,7 +117,7 @@ public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
 
     @Override
     public Node cloneNode(boolean deep) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -100,36 +142,6 @@ public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
 
     @Override
     public Object getUserData(String key) {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return "html";
-    }
-
-    @Override
-    public NamedNodeMap getEntities() {
-        return null;
-    }
-
-    @Override
-    public NamedNodeMap getNotations() {
-        return null;
-    }
-
-    @Override
-    public String getPublicId() {
-        return null;
-    }
-
-    @Override
-    public String getSystemId() {
-        return null;
-    }
-
-    @Override
-    public String getInternalSubset() {
         return null;
     }
 }

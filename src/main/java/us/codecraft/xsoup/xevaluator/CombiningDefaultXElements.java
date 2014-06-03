@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.nodes;
+package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.select.Elements;
 
@@ -9,21 +9,21 @@ import java.util.List;
 /**
  * @author code4crafter@gmail.com
  */
-public class CombiningXElements implements XElements {
+public class CombiningDefaultXElements implements XEvaluatorElements {
 
-    private List<XElements> elementsList;
+    private List<XEvaluatorElements> elementsList;
 
-    public CombiningXElements(List<XElements> elementsList) {
+    public CombiningDefaultXElements(List<XEvaluatorElements> elementsList) {
         this.elementsList = elementsList;
     }
 
-    public CombiningXElements(XElements... elementsList) {
+    public CombiningDefaultXElements(XEvaluatorElements... elementsList) {
         this.elementsList = Arrays.asList(elementsList);
     }
 
     @Override
     public String get() {
-        for (XElements xElements : elementsList) {
+        for (XEvaluatorElements xElements : elementsList) {
             String result = xElements.get();
             if (result != null) {
                 return result;
@@ -35,16 +35,15 @@ public class CombiningXElements implements XElements {
     @Override
     public List<String> list() {
         List<String> results = new ArrayList<String>();
-        for (XElements xElements : elementsList) {
+        for (XEvaluatorElements xElements : elementsList) {
             results.addAll(xElements.list());
         }
         return results;
     }
 
-    @Override
     public Elements getElements() {
         Elements elements = new Elements();
-        for (XElements xElements : elementsList) {
+        for (XEvaluatorElements xElements : elementsList) {
             elements.addAll(xElements.getElements());
         }
         return elements;

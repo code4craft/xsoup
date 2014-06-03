@@ -1,6 +1,4 @@
-package us.codecraft.xsoup.nodes;
-
-import org.jsoup.nodes.Element;
+package us.codecraft.xsoup;
 
 /**
  * @author code4crafter@gmail.com
@@ -9,5 +7,4 @@ public interface XElement {
 
     String get();
 
-    Element getElement();
 }

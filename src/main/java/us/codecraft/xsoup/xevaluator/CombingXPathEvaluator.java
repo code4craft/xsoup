@@ -1,10 +1,9 @@
-package us.codecraft.xsoup.evaluator;
+package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.nodes.CombiningXElements;
-import us.codecraft.xsoup.nodes.XElements;
+import us.codecraft.xsoup.XElements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ public class CombingXPathEvaluator implements XPathEvaluator {
         for (XPathEvaluator xPathEvaluator : xPathEvaluators) {
             xElementses.add(xPathEvaluator.evaluate(element));
         }
-        return new CombiningXElements(xElementses);
+        return new CombiningDefaultXElements(xElementses);
     }
 
     @Override

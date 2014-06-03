@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.adaptor;
+package us.codecraft.xsoup.w3c;
 
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;

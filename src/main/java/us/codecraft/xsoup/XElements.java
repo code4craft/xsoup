@@ -1,6 +1,4 @@
-package us.codecraft.xsoup.nodes;
-
-import org.jsoup.select.Elements;
+package us.codecraft.xsoup;
 
 import java.util.List;
 
@@ -13,5 +11,4 @@ public interface XElements {
 
     List<String> list();
 
-    Elements getElements();
 }

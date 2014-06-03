@@ -8,7 +8,7 @@ import us.codecraft.xsoup.xevaluator.XPathParser;
 /**
  * @author code4crafter@gmail.com
  */
-public class Xsoup {
+public class W3cXsoup {
 
     public static XElements select(Element element, String xpathStr) {
         return XPathParser.parse(xpathStr).evaluate(element);

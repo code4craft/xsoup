@@ -1,20 +1,19 @@
-package us.codecraft.xsoup.nodes;
+package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.evaluator.ElementOperator;
 
 /**
  * XPath result.
  *
  * @author code4crafter@gmail.com
  */
-public class DefaultXElement implements XElement {
+public class DefaultXEvaluatorElement implements XEvaluatorElement {
 
     private Element element;
 
     private ElementOperator elementOperator;
 
-    public DefaultXElement(Element element, ElementOperator elementOperator) {
+    public DefaultXEvaluatorElement(Element element, ElementOperator elementOperator) {
         this.element = element;
         this.elementOperator = elementOperator;
     }

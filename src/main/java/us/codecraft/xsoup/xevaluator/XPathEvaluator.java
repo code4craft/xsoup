@@ -1,7 +1,7 @@
-package us.codecraft.xsoup.evaluator;
+package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.nodes.XElements;
+import us.codecraft.xsoup.XElements;
 
 /**
  * @author code4crafter@gmail.com

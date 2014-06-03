@@ -3,6 +3,7 @@ package us.codecraft.xsoup.adaptor;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import us.codecraft.xsoup.w3c.DocumentAdaptor;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;

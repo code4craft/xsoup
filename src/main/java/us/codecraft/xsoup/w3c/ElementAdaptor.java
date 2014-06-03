@@ -1,9 +1,7 @@
-package us.codecraft.xsoup.adaptor;
+package us.codecraft.xsoup.w3c;
 
 import org.jsoup.nodes.Attribute;
 import org.w3c.dom.*;
-
-import static us.codecraft.xsoup.adaptor.NodeAdaptors.*;
 
 /**
  * @author code4crafer@gmail.com
@@ -31,12 +29,12 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
         if (element.attr(name) == null) {
             return null;
         }
-        return getAttr(new Attribute(name, element.attr(name)), element);
+        return NodeAdaptors.getAttr(new Attribute(name, element.attr(name)), element);
     }
 
     @Override
     public NodeList getElementsByTagName(String name) {
-        return getNodeList(element.getElementsByTag(name));
+        return NodeAdaptors.getNodeList(element.getElementsByTag(name));
     }
 
     @Override
@@ -66,12 +64,12 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public Node getParentNode() {
-        return getElement(element.parent());
+        return NodeAdaptors.getElement(element.parent());
     }
 
     @Override
     public NodeList getChildNodes() {
-        return getNodeList(element.childNodes());
+        return NodeAdaptors.getNodeList(element.childNodes());
     }
 
     @Override
@@ -79,7 +77,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
         if (element.children().isEmpty()) {
             return null;
         }
-        return getNode(element.child(0));
+        return NodeAdaptors.getNode(element.child(0));
     }
 
     @Override
@@ -87,27 +85,27 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
         if (element.children().isEmpty()) {
             return null;
         }
-        return getNode(element.child(element.childNodeSize()));
+        return NodeAdaptors.getNode(element.child(element.childNodeSize()));
     }
 
     @Override
     public Node getPreviousSibling() {
-        return getNode(element.previousSibling());
+        return NodeAdaptors.getNode(element.previousSibling());
     }
 
     @Override
     public Node getNextSibling() {
-        return getNode(element.nextSibling());
+        return NodeAdaptors.getNode(element.nextSibling());
     }
 
     @Override
     public NamedNodeMap getAttributes() {
-        return getNamedNodeMap(NodeAdaptors.getAttributes(element.attributes(), element));
+        return NodeAdaptors.getNamedNodeMap(NodeAdaptors.getAttributes(element.attributes(), element));
     }
 
     @Override
     public Document getOwnerDocument() {
-        return getDocument(element.ownerDocument());
+        return NodeAdaptors.getDocument(element.ownerDocument());
     }
 
     @Override
