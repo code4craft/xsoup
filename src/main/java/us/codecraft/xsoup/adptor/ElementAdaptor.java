@@ -1,5 +1,6 @@
 package us.codecraft.xsoup.adptor;
 
+import org.jsoup.nodes.Attribute;
 import org.w3c.dom.*;
 
 /**
@@ -8,6 +9,10 @@ import org.w3c.dom.*;
 public class ElementAdaptor extends NodeAdaptor implements Element {
 
     private org.jsoup.nodes.Element element;
+
+    public ElementAdaptor(org.jsoup.nodes.Element element) {
+        this.element = element;
+    }
 
     @Override
     public String getTagName() {
@@ -21,12 +26,15 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public Attr getAttributeNode(String name) {
-        return null;
+        if (element.attr(name) == null) {
+            return null;
+        }
+        return new AttributeAdaptor(new Attribute(name, element.attr(name)), element);
     }
 
     @Override
     public NodeList getElementsByTagName(String name) {
-        return null;
+        return new NodeListAdaptor(element.getElementsByTag(name));
     }
 
     @Override
@@ -36,7 +44,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public TypeInfo getSchemaTypeInfo() {
-        return null;
+        return DummyTypeInfo.getInstance();
     }
 
     @Override
@@ -51,37 +59,37 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public short getNodeType() {
-        return 0;
+        return ELEMENT_NODE;
     }
 
     @Override
     public Node getParentNode() {
-        return null;
+        return new ElementAdaptor(element.parent());
     }
 
     @Override
     public NodeList getChildNodes() {
-        return null;
+        return new NodeListAdaptor(element.childNodes());
     }
 
     @Override
     public Node getFirstChild() {
-        return null;
+        return NodeAdaptorFactory.getNode(element.child(0));
     }
 
     @Override
     public Node getLastChild() {
-        return null;
+        return NodeAdaptorFactory.getNode(element.child(element.childNodeSize()));
     }
 
     @Override
     public Node getPreviousSibling() {
-        return null;
+        return NodeAdaptorFactory.getNode(element.previousSibling());
     }
 
     @Override
     public Node getNextSibling() {
-        return null;
+        return NodeAdaptorFactory.getNode(element.nextSibling());
     }
 
     @Override
@@ -91,7 +99,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public Document getOwnerDocument() {
-        return null;
+        return new DocumentAdaptor(element.ownerDocument());
     }
 
     @Override
