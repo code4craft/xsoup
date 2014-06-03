@@ -65,7 +65,7 @@ public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
 
     @Override
     public Document getOwnerDocument() {
-        return NodeAdaptorFactory.getDocument(document);
+        return NodeAdaptors.getDocument(document);
     }
 
     @Override

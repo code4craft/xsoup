@@ -3,7 +3,7 @@ package us.codecraft.xsoup.adaptor;
 import org.jsoup.nodes.Attribute;
 import org.w3c.dom.*;
 
-import static us.codecraft.xsoup.adaptor.NodeAdaptorFactory.*;
+import static us.codecraft.xsoup.adaptor.NodeAdaptors.*;
 
 /**
  * @author code4crafer@gmail.com
@@ -96,7 +96,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public NamedNodeMap getAttributes() {
-        return getNamedNodeMap(NodeAdaptorFactory.getAttributes(element.attributes(), element));
+        return getNamedNodeMap(NodeAdaptors.getAttributes(element.attributes(), element));
     }
 
     @Override

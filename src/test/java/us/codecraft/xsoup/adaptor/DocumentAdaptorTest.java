@@ -22,7 +22,7 @@ public class DocumentAdaptorTest {
         XPathFactory xPathfactory = XPathFactory.newInstance();
         XPath target = xPathfactory.newXPath();
         try {
-            XPathExpression compile = target.compile("//div[@id='test']");
+            XPathExpression compile = target.compile("//div");
             String evaluate = compile.evaluate(document);
             System.out.println(evaluate);
         } catch (XPathExpressionException e) {

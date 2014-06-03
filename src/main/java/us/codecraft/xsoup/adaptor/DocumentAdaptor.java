@@ -27,13 +27,18 @@ public class DocumentAdaptor extends ElementAdaptor implements Document {
     }
 
     @Override
+    public short getNodeType() {
+        return DOCUMENT_NODE;
+    }
+
+    @Override
     public Element getDocumentElement() {
         return this;
     }
 
     @Override
     public Element getElementById(String elementId) {
-        return NodeAdaptorFactory.getElement(document.getElementById(elementId));
+        return NodeAdaptors.getElement(document.getElementById(elementId));
     }
 
     @Override

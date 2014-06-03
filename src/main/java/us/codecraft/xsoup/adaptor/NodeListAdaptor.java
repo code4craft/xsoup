@@ -18,7 +18,7 @@ public class NodeListAdaptor implements NodeList {
 
     @Override
     public Node item(int index) {
-        return NodeAdaptorFactory.getNode(nodes.get(index));
+        return NodeAdaptors.getNode(nodes.get(index));
     }
 
     @Override

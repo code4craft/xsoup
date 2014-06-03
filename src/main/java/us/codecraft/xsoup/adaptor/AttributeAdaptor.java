@@ -42,7 +42,7 @@ public class AttributeAdaptor extends NodeAdaptor implements Attr {
 
     @Override
     public Element getOwnerElement() {
-        return new DocumentAdaptor(element.ownerDocument());
+        return NodeAdaptors.getElement(element);
     }
 
     @Override
