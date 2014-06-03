@@ -1,19 +1,15 @@
 package us.codecraft.xsoup.xevaluator;
 
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Collector;
 import org.jsoup.select.Elements;
 import org.jsoup.select.Evaluator;
-import us.codecraft.xsoup.XElements;
-import us.codecraft.xsoup.XPathEvaluator;
 
 /**
  * @author code4crafter@gmail.com
  */
-public class DefaultXPathEvaluator implements XPathEvaluator {
+public class DefaultXPathEvaluator implements XEvaluatorPathEvaluator {
 
     private Evaluator evaluator;
 
@@ -25,15 +21,9 @@ public class DefaultXPathEvaluator implements XPathEvaluator {
     }
 
     @Override
-    public XElements evaluate(Element element) {
+    public XEvaluatorElements evaluate(Element element) {
         Elements elements = Collector.collect(evaluator, element);
         return new DefaultXEvaluatorElements(elements, elementOperator);
-    }
-
-    @Override
-    public XElements evaluate(String html) {
-        Document document = Jsoup.parse(html);
-        return evaluate(document);
     }
 
     @Override

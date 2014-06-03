@@ -1,11 +1,12 @@
-package us.codecraft.xsoup.adaptor;
+package us.codecraft.xsoup.w3c;
 
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.w3c.dom.Document;
-import us.codecraft.xsoup.w3c.DocumentAdaptor;
+import us.codecraft.xsoup.Xsoup;
 
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
@@ -26,5 +27,12 @@ public class DocumentAdaptorTest {
         XPathExpression xPathExpression = target.compile("//div/a/@href");
         String result = xPathExpression.evaluate(document);
         assertThat(result).isEqualTo("https://github.com");
+
+        xPathExpression = target.compile("//div/a");
+        Object evaluate = xPathExpression.evaluate(document, XPathConstants.NODE);
+        System.out.println(evaluate);
+
+        String s = Xsoup.compileW3c("//div").evaluate(Jsoup.parse(html)).get();
+        System.out.println(s);
     }
 }

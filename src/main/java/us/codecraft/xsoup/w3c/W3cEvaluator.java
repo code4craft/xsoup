@@ -1,6 +1,5 @@
 package us.codecraft.xsoup.w3c;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -41,11 +40,6 @@ public class W3cEvaluator implements XPathEvaluator {
         } catch (XPathExpressionException e) {
             throw new RuntimeException("XPath evaluate error " + xPathExpression, e);
         }
-    }
-
-    @Override
-    public XElements evaluate(String html) {
-        return evaluate(Jsoup.parse(html));
     }
 
     @Override

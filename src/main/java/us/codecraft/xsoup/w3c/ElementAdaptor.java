@@ -100,6 +100,12 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public NamedNodeMap getAttributes() {
+//        try{
+//
+//            throw new RuntimeException();
+//        }   catch (Exception e){
+//            e.printStackTrace();
+//        }
         return NodeAdaptors.getNamedNodeMap(NodeAdaptors.getAttributes(element.attributes(), element));
     }
 

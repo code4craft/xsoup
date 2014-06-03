@@ -9,8 +9,6 @@ public interface XPathEvaluator {
 
     XElements evaluate(Element element);
 
-    XElements evaluate(String html);
-
     boolean hasAttribute();
 
 }

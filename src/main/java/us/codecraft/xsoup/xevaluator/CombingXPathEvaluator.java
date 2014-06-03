@@ -1,9 +1,6 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.XElements;
 import us.codecraft.xsoup.XPathEvaluator;
 
 import java.util.ArrayList;
@@ -13,31 +10,25 @@ import java.util.List;
 /**
  * @author code4crafter@gmail.com
  */
-public class CombingXPathEvaluator implements XPathEvaluator {
+public class CombingXPathEvaluator implements XEvaluatorPathEvaluator {
 
-    private List<XPathEvaluator> xPathEvaluators;
+    private List<XEvaluatorPathEvaluator> xPathEvaluators;
 
-    public CombingXPathEvaluator(List<XPathEvaluator> xPathEvaluators) {
+    public CombingXPathEvaluator(List<XEvaluatorPathEvaluator> xPathEvaluators) {
         this.xPathEvaluators = xPathEvaluators;
     }
 
-    public CombingXPathEvaluator(XPathEvaluator... xPathEvaluators) {
+    public CombingXPathEvaluator(XEvaluatorPathEvaluator... xPathEvaluators) {
         this.xPathEvaluators = Arrays.asList(xPathEvaluators);
     }
 
     @Override
-    public XElements evaluate(Element element) {
-        List<XElements> xElementses = new ArrayList<XElements>();
-        for (XPathEvaluator xPathEvaluator : xPathEvaluators) {
+    public XEvaluatorElements evaluate(Element element) {
+        List<XEvaluatorElements> xElementses = new ArrayList<XEvaluatorElements>();
+        for (XEvaluatorPathEvaluator xPathEvaluator : xPathEvaluators) {
             xElementses.add(xPathEvaluator.evaluate(element));
         }
         return new CombiningDefaultXElements(xElementses);
-    }
-
-    @Override
-    public XElements evaluate(String html) {
-        Document document = Jsoup.parse(html);
-        return evaluate(document);
     }
 
     @Override
