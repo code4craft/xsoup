@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.nodes;
+package us.codecraft.xsoup.evaluator;
 
 import org.jsoup.examples.HtmlToPlainText;
 import org.jsoup.helper.Validate;

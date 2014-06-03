@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.nodes;
+package us.codecraft.xsoup.evaluator;
 
 
 import org.jsoup.Jsoup;
@@ -7,8 +7,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Collector;
 import org.jsoup.select.Elements;
 import org.jsoup.select.Evaluator;
-import us.codecraft.xsoup.evalutor.DefaultXElements;
-import us.codecraft.xsoup.evalutor.XElements;
+import us.codecraft.xsoup.nodes.DefaultXElements;
+import us.codecraft.xsoup.nodes.XElements;
 
 /**
  * @author code4crafter@gmail.com

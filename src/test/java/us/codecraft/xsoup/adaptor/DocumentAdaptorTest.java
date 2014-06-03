@@ -3,11 +3,11 @@ package us.codecraft.xsoup.adaptor;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.*;
+import java.io.StringReader;
 
 /**
  * @author code4crafer@gmail.com
@@ -22,8 +22,14 @@ public class DocumentAdaptorTest {
         XPathFactory xPathfactory = XPathFactory.newInstance();
         XPath target = xPathfactory.newXPath();
         try {
-            XPathExpression compile = target.compile("//div");
-            String evaluate = compile.evaluate(document);
+            XPathExpression xPathExpression = target.compile("//html");
+            NodeList list = (NodeList) xPathExpression.evaluate(new InputSource(new StringReader(html)), XPathConstants.NODESET);
+            System.out.println(list.getLength());
+
+            for (int i=0;i<list.getLength();i++){
+                System.out.println(list.item(i));
+            }
+            Object evaluate = xPathExpression.evaluate(document, XPathConstants.NODESET);
             System.out.println(evaluate);
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);

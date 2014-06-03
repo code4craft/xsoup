@@ -3,9 +3,9 @@ package us.codecraft.xsoup;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
-import us.codecraft.xsoup.nodes.XPathEvaluator;
-import us.codecraft.xsoup.nodes.XPathParser;
-import us.codecraft.xsoup.evalutor.XElements;
+import us.codecraft.xsoup.evaluator.XPathEvaluator;
+import us.codecraft.xsoup.evaluator.XPathParser;
+import us.codecraft.xsoup.nodes.XElements;
 
 import java.util.List;
 

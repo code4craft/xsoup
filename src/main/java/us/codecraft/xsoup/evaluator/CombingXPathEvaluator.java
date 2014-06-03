@@ -1,10 +1,10 @@
-package us.codecraft.xsoup.nodes;
+package us.codecraft.xsoup.evaluator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.evalutor.CombiningXElements;
-import us.codecraft.xsoup.evalutor.XElements;
+import us.codecraft.xsoup.nodes.CombiningXElements;
+import us.codecraft.xsoup.nodes.XElements;
 
 import java.util.ArrayList;
 import java.util.Arrays;

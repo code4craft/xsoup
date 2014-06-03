@@ -1,7 +1,7 @@
 package us.codecraft.xsoup;
 
 import org.junit.Test;
-import us.codecraft.xsoup.nodes.XTokenQueue;
+import us.codecraft.xsoup.evaluator.XTokenQueue;
 
 import java.util.List;
 
