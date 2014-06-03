@@ -3,6 +3,7 @@ package us.codecraft.xsoup.xevaluator;
 import org.jsoup.helper.Validate;
 import org.jsoup.select.Evaluator;
 import org.jsoup.select.Selector;
+import us.codecraft.xsoup.XPathEvaluator;
 
 import java.util.ArrayList;
 import java.util.List;
