@@ -56,7 +56,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public String getNodeValue() throws DOMException {
-        return element.val();
+        return element.outerHtml();
     }
 
     @Override
@@ -76,11 +76,17 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public Node getFirstChild() {
+        if (element.children().isEmpty()) {
+            return null;
+        }
         return getNode(element.child(0));
     }
 
     @Override
     public Node getLastChild() {
+        if (element.children().isEmpty()) {
+            return null;
+        }
         return getNode(element.child(element.childNodeSize()));
     }
 
@@ -106,7 +112,7 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
 
     @Override
     public boolean hasChildNodes() {
-        return false;
+        return !element.children().isEmpty();
     }
 
     @Override
