@@ -1,78 +1,36 @@
-package us.codecraft.xsoup.adptor;
+package us.codecraft.xsoup.adaptor;
 
-import org.jsoup.nodes.*;
 import org.w3c.dom.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * @author code4crafer@gmail.com
  */
-public class AttributeAdaptor extends NodeAdaptor implements Attr {
+public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
 
-    private Attribute attribute;
+    private org.jsoup.nodes.Document document;
 
-    private org.jsoup.nodes.Element element;
-
-    public AttributeAdaptor(Attribute attribute, org.jsoup.nodes.Element element) {
-        this.attribute = attribute;
-        this.element = element;
-    }
-
-    @Override
-    public String getName() {
-        return attribute.getKey();
-    }
-
-    @Override
-    public boolean getSpecified() {
-        return false;
-    }
-
-    @Override
-    public String getValue() {
-        return attribute.getValue();
-    }
-
-    @Override
-    public void setValue(String value) throws DOMException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Element getOwnerElement() {
-        return new DocumentAdaptor(element.ownerDocument());
-    }
-
-    @Override
-    public TypeInfo getSchemaTypeInfo() {
-        return new DummyTypeInfo();
-    }
-
-    @Override
-    public boolean isId() {
-        return false;
+    public HtmlDocumentType(org.jsoup.nodes.Document document) {
+        this.document = document;
     }
 
     @Override
     public String getNodeName() {
-        return attribute.getKey();
+        return "html";
     }
 
     @Override
     public String getNodeValue() throws DOMException {
-        return attribute.getValue();
+        return null;
     }
 
     @Override
     public short getNodeType() {
-        return ATTRIBUTE_NODE;
+        return DOCUMENT_TYPE_NODE;
     }
 
     @Override
     public Node getParentNode() {
-        return new ElementAdaptor(element);
+        return null;
     }
 
     @Override
@@ -107,7 +65,7 @@ public class AttributeAdaptor extends NodeAdaptor implements Attr {
 
     @Override
     public Document getOwnerDocument() {
-        return new DocumentAdaptor(element.ownerDocument());
+        return NodeAdaptorFactory.getDocument(document);
     }
 
     @Override
@@ -117,7 +75,7 @@ public class AttributeAdaptor extends NodeAdaptor implements Attr {
 
     @Override
     public Node cloneNode(boolean deep) {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     @Override
@@ -142,6 +100,36 @@ public class AttributeAdaptor extends NodeAdaptor implements Attr {
 
     @Override
     public Object getUserData(String key) {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return "html";
+    }
+
+    @Override
+    public NamedNodeMap getEntities() {
+        return null;
+    }
+
+    @Override
+    public NamedNodeMap getNotations() {
+        return null;
+    }
+
+    @Override
+    public String getPublicId() {
+        return null;
+    }
+
+    @Override
+    public String getSystemId() {
+        return null;
+    }
+
+    @Override
+    public String getInternalSubset() {
         return null;
     }
 }

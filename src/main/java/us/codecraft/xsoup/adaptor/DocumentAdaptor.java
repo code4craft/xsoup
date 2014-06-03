@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.adptor;
+package us.codecraft.xsoup.adaptor;
 
 import org.w3c.dom.*;
 
@@ -33,7 +33,7 @@ public class DocumentAdaptor extends ElementAdaptor implements Document {
 
     @Override
     public Element getElementById(String elementId) {
-        return new ElementAdaptor(document.getElementById(elementId));
+        return NodeAdaptorFactory.getElement(document.getElementById(elementId));
     }
 
     @Override

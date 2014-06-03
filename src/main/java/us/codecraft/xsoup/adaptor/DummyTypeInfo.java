@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.adptor;
+package us.codecraft.xsoup.adaptor;
 
 import org.w3c.dom.TypeInfo;
 
