@@ -1,14 +1,16 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.helper.Validate;
-import org.jsoup.select.Evaluator;
-import org.jsoup.select.Selector;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.jsoup.helper.Validate;
+import org.jsoup.select.Evaluator;
+import org.jsoup.select.Selector;
 
 /**
  * Parser of XPath.
@@ -24,6 +26,31 @@ public class XPathParser {
     private static final String[] QUOTES = new String[]{"\"", "'"};
 
     private static final String[] HIERARCHY_COMBINATORS = new String[]{"//", "/", "|"};
+
+    private static final Map<String, FunctionEvaluator> FUNCTION_MAPPING = new HashMap<String, FunctionEvaluator>();
+    static {
+        FUNCTION_MAPPING.put("contains", new FunctionEvaluator() {
+            @Override
+            public Evaluator call(String... param) {
+                Validate.isTrue(param.length == 2, String.format("Error argument of %s", "contains"));
+                return new Evaluator.AttributeWithValueContaining(param[0], param[1]);
+            }
+        });
+        FUNCTION_MAPPING.put("starts-with", new FunctionEvaluator() {
+            @Override
+            public Evaluator call(String... param) {
+                Validate.isTrue(param.length == 2, String.format("Error argument of %s", "starts-with"));
+                return new Evaluator.AttributeWithValueStarting(param[0], param[1]);
+            }
+        });
+        FUNCTION_MAPPING.put("ends-with", new FunctionEvaluator() {
+            @Override
+            public Evaluator call(String... param) {
+                Validate.isTrue(param.length == 2, String.format("Error argument of %s", "ends-with"));
+                return new Evaluator.AttributeWithValueEnding(param[0], param[1]);
+            }
+        });
+    }
 
     private static final String OR_COMBINATOR = "|";
 
@@ -175,6 +202,10 @@ public class XPathParser {
         }
     }
 
+    interface FunctionEvaluator {
+        Evaluator call(String... param);
+    }
+
     enum Operation {
         AND, OR;
     }
@@ -214,17 +245,21 @@ public class XPathParser {
     }
 
     private Evaluator byFunction(XTokenQueue predicatesQueue) {
-        if (predicatesQueue.matchChomp("contains")) {
-            String paramString = predicatesQueue.chompBalanced('(', ')');
-            List<String> params = XTokenQueue.trimQuotes(XTokenQueue.parseFuncionParams(paramString));
-            Validate.isTrue(params.size() == 2, String.format("Error argument \"%s\" of contains", paramString));
-            if (params.get(0).startsWith("@")) {
-                return new Evaluator.AttributeWithValueContaining(params.get(0).substring(1), params.get(1));
+        for (Map.Entry<String, FunctionEvaluator> entry : FUNCTION_MAPPING.entrySet()) {
+            if (predicatesQueue.matchChomp(entry.getKey())) {
+                String paramString = predicatesQueue.chompBalanced('(', ')');
+                List<String> params = XTokenQueue.trimQuotes(XTokenQueue.parseFuncionParams(paramString));
+
+                if (params.get(0).startsWith("@")) {
+                    params.set(0, params.get(0).substring(1));
+                    return entry.getValue().call(params.toArray(new String[0]));
+                } else {
+                    return null;
+                }
             }
-        } else {
-            throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, predicatesQueue.remainder());
         }
-        return null;
+
+        throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, predicatesQueue.remainder());
     }
 
     private void allElements() {
