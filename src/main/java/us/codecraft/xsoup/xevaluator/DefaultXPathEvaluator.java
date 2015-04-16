@@ -22,7 +22,13 @@ public class DefaultXPathEvaluator implements XPathEvaluator {
 
     @Override
     public XElements evaluate(Element element) {
-        Elements elements = Collector.collect(evaluator, element);
+        Elements elements;
+        if (evaluator != null) {
+            elements = Collector.collect(evaluator, element);
+        } else {
+            elements = new Elements();
+            elements.add(element);
+        }
         return new DefaultXElements(elements, elementOperator);
     }
 

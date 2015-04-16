@@ -2,6 +2,7 @@ package us.codecraft.xsoup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Test;
 import us.codecraft.xsoup.xevaluator.XElements;
 import us.codecraft.xsoup.xevaluator.XPathEvaluator;
@@ -262,6 +263,18 @@ public class XsoupTest {
 
         String result = Xsoup.select(document, "//div[@id='test2']/regex(\"/list/(\\d+)\",1)").get();
         assertThat(result).isEqualTo("12345");
+
+    }
+
+    @Test
+    public void testEmptyElementEvaluator() {
+
+        String html2 = "<a href='https://github.com'>github.com</a>";
+
+        Element element = Jsoup.parse(html2).getElementsByTag("a").get(0);
+
+        String result = Xsoup.select(element, "@href").get();
+        assertThat(result).isEqualTo("https://github.com");
 
     }
 
