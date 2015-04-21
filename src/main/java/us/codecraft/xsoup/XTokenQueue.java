@@ -1,4 +1,4 @@
-package us.codecraft.xsoup.xevaluator;
+package us.codecraft.xsoup;
 
 import org.jsoup.helper.StringUtil;
 import org.jsoup.helper.Validate;

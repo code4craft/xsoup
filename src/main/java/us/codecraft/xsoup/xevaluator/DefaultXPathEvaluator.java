@@ -5,6 +5,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Collector;
 import org.jsoup.select.Elements;
 import org.jsoup.select.Evaluator;
+import us.codecraft.xsoup.XElements;
+import us.codecraft.xsoup.XPathEvaluator;
 
 /**
  * @author code4crafter@gmail.com

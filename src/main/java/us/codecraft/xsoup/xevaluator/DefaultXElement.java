@@ -1,6 +1,7 @@
 package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.nodes.Element;
+import us.codecraft.xsoup.XElement;
 
 /**
  * XPath result.

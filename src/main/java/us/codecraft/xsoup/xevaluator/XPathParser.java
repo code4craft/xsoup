@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 import org.jsoup.helper.Validate;
 import org.jsoup.select.Evaluator;
 import org.jsoup.select.Selector;
+import us.codecraft.xsoup.XPathEvaluator;
+import us.codecraft.xsoup.XTokenQueue;
 
 /**
  * Parser of XPath.

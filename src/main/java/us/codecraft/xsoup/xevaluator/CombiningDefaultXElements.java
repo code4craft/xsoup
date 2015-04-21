@@ -1,6 +1,7 @@
 package us.codecraft.xsoup.xevaluator;
 
 import org.jsoup.select.Elements;
+import us.codecraft.xsoup.XElements;
 
 import java.util.ArrayList;
 import java.util.Arrays;

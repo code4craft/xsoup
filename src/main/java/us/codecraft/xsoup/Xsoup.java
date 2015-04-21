@@ -4,8 +4,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import us.codecraft.xsoup.w3c.NodeAdaptors;
-import us.codecraft.xsoup.xevaluator.XElements;
-import us.codecraft.xsoup.xevaluator.XPathEvaluator;
 import us.codecraft.xsoup.xevaluator.XPathParser;
 
 /**
