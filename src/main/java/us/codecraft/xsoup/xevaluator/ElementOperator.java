@@ -122,7 +122,7 @@ public abstract class ElementOperator {
 
     /**
      * usage:
-     * <p/>
+     * <br>
      * regex('.*')
      * regex(@attr,'.*')
      * regex(@attr,'.*',group)

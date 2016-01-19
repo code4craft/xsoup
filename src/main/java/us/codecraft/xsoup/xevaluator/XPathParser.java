@@ -1,18 +1,14 @@
 package us.codecraft.xsoup.xevaluator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.jsoup.helper.Validate;
 import org.jsoup.select.Evaluator;
 import org.jsoup.select.Selector;
 import us.codecraft.xsoup.XPathEvaluator;
 import us.codecraft.xsoup.XTokenQueue;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parser of XPath.
@@ -174,8 +170,8 @@ public class XPathParser {
 
     /**
      * EvaluatorStack for logic calculate.
-     * Priority: AND > OR, Regardless of bracket.
-     * <p/>
+     * Priority: AND &gt; OR, Regardless of bracket.
+     * <br>
      * Calculate AND immediately.
      * Store evaluator with OR, until there are two evaluator in stack, then calculate it.
      */

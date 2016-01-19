@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * A character queue with parsing helpers.
- * <p/>
+ * <br>
  * Most code borrowed from {@link org.jsoup.parser.TokenQueue}
  *
  * @author Jonathan Hedley
@@ -187,7 +187,7 @@ public class XTokenQueue {
     /**
      * Consumes the supplied sequence of the queue. If the queue does not start with the supplied sequence, will
      * throw an illegal state exception -- but you should be running match() against that condition.
-     * <p/>
+     * <br>
      * Case insensitive.
      *
      * @param seq sequence to remove from head of queue.
@@ -273,7 +273,7 @@ public class XTokenQueue {
 
     /**
      * Pulls a string off the queue (like consumeTo), and then pulls off the matched string (but does not return it).
-     * <p/>
+     * <br>
      * If the queue runs out of characters before finding the seq, will return as much as it can (and queue will go
      * isEmpty() == true).
      *
@@ -391,6 +391,7 @@ public class XTokenQueue {
 
     /**
      * Pulls the next run of whitespace characters of the queue.
+     * @return seen
      */
     public boolean consumeWhitespace() {
         boolean seen = false;
