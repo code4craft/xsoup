@@ -8,6 +8,8 @@ import org.jsoup.nodes.TextNode;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
+import us.codecraft.xsoup.XTokenQueue;
 
 /**
  * Operate on element to get XPath result.
@@ -16,164 +18,197 @@ import java.util.regex.Pattern;
  */
 public abstract class ElementOperator {
 
-    public abstract String operate(Element element);
+	public abstract String operate(Element element);
 
-    public static class AttributeGetter extends ElementOperator {
+	public static class AttributeGetter extends ElementOperator {
 
-        private String attribute;
+		private String attribute;
 
-        public AttributeGetter(String attribute) {
-            this.attribute = attribute;
-        }
+		public AttributeGetter(String attribute) {
+			this.attribute = attribute;
+		}
 
-        @Override
-        public String operate(Element element) {
-            return element.attr(attribute);
-        }
+		@Override
+		public String operate(Element element) {
+			return element.attr(attribute);
+		}
 
-        @Override
-        public String toString() {
-            return "@" + attribute;
-        }
-    }
+		@Override
+		public String toString() {
+			return "@" + attribute;
+		}
+	}
 
-    public static class AllText extends ElementOperator {
+	public static class AllText extends ElementOperator {
 
-        @Override
-        public String operate(Element element) {
-            return element.text();
-        }
+		@Override
+		public String operate(Element element) {
+			return element.text();
+		}
 
-        @Override
-        public String toString() {
-            return "allText()";
-        }
-    }
+		@Override
+		public String toString() {
+			return "allText()";
+		}
+	}
 
-    public static class Html extends ElementOperator {
+	public static class Html extends ElementOperator {
 
-        @Override
-        public String operate(Element element) {
-            return element.html();
-        }
+		@Override
+		public String operate(Element element) {
+			return element.html();
+		}
 
-        @Override
-        public String toString() {
-            return "html()";
-        }
-    }
+		@Override
+		public String toString() {
+			return "html()";
+		}
+	}
 
-    public static class OuterHtml extends ElementOperator {
+	public static class OuterHtml extends ElementOperator {
 
-        @Override
-        public String operate(Element element) {
-            return element.outerHtml();
-        }
+		@Override
+		public String operate(Element element) {
+			return element.outerHtml();
+		}
 
-        @Override
-        public String toString() {
-            return "outerHtml()";
-        }
-    }
+		@Override
+		public String toString() {
+			return "outerHtml()";
+		}
+	}
 
-    public static class TidyText extends ElementOperator {
+	public static class TidyText extends ElementOperator {
 
-        @Override
-        public String operate(Element element) {
-            return new HtmlToPlainText().getPlainText(element);
-        }
+		@Override
+		public String operate(Element element) {
+			return new HtmlToPlainText().getPlainText(element);
+		}
 
-        @Override
-        public String toString() {
-            return "tidyText()";
-        }
-    }
+		@Override
+		public String toString() {
+			return "tidyText()";
+		}
+	}
 
-    public static class GroupedText extends ElementOperator {
+	public static class GroupedText extends ElementOperator {
 
-        private int group;
+		private int group;
 
-        public GroupedText(int group) {
-            this.group = group;
-        }
+		public GroupedText(int group) {
+			this.group = group;
+		}
 
-        @Override
-        public String operate(Element element) {
-            int index = 0;
-            StringBuilder accum = new StringBuilder();
-            for (Node node : element.childNodes()) {
-                if (node instanceof TextNode) {
-                    TextNode textNode = (TextNode) node;
-                    if (group == 0) {
-                        accum.append(textNode.text());
-                    } else if (++index == group) {
-                        return textNode.text();
-                    }
-                }
-            }
-            return accum.toString();
-        }
+		@Override
+		public String operate(Element element) {
+			int index = 0;
+			StringBuilder accum = new StringBuilder();
+			for (Node node : element.childNodes()) {
+				if (node instanceof TextNode) {
+					TextNode textNode = (TextNode) node;
+					if (group == 0) {
+						accum.append(textNode.text());
+					} else if (++index == group) {
+						return textNode.text();
+					}
+				}
+			}
+			return accum.toString();
+		}
 
-        @Override
-        public String toString() {
-            return String.format("text(%d)", group);
-        }
-    }
+		@Override
+		public String toString() {
+			return String.format("text(%d)", group);
+		}
+	}
 
-    /**
+	/**
      * usage:
      * <br>
      * regex('.*')
      * regex(@attr,'.*')
      * regex(@attr,'.*',group)
-     */
-    public static class Regex extends ElementOperator {
+	 */
+	public static class Regex extends ElementOperator {
 
-        private Pattern pattern;
+		private Pattern pattern;
 
-        private String attribute;
+		private String attribute;
 
-        private int group;
+		private int group;
 
-        public Regex(String expr) {
-            this.pattern = Pattern.compile(expr);
-        }
+		public Regex(String expr) {
+			this.pattern = Pattern.compile(expr);
+		}
 
-        public Regex(String expr, String attribute) {
-            this.attribute = attribute;
-            this.pattern = Pattern.compile(expr);
-        }
+		public Regex(String expr, String attribute) {
+			this.attribute = attribute;
+			this.pattern = Pattern.compile(expr);
+		}
 
-        public Regex(String expr, String attribute, int group) {
-            this.attribute = attribute;
-            this.pattern = Pattern.compile(expr);
-            this.group = group;
-        }
+		public Regex(String expr, String attribute, int group) {
+			this.attribute = attribute;
+			this.pattern = Pattern.compile(expr);
+			this.group = group;
+		}
 
-        @Override
-        public String operate(Element element) {
-            Matcher matcher = pattern.matcher(getSource(element));
-            if (matcher.find()) {
-                return matcher.group(group);
-            }
-            return null;
-        }
+		@Override
+		public String operate(Element element) {
+			Matcher matcher = pattern.matcher(getSource(element));
+			if (matcher.find()) {
+				return matcher.group(group);
+			}
+			return null;
+		}
 
-        protected String getSource(Element element) {
-            if (attribute == null) {
-                return element.outerHtml();
-            } else {
-                String attr = element.attr(attribute);
-                Validate.notNull(attr, "Attribute " + attribute + " of " + element + " is not exist!");
-                return attr;
-            }
-        }
+		protected String getSource(Element element) {
+			if (attribute == null) {
+				return element.outerHtml();
+			} else {
+				String attr = element.attr(attribute);
+				Validate.notNull(attr, "Attribute " + attribute + " of " + element + " is not exist!");
+				return attr;
+			}
+		}
 
-        @Override
-        public String toString() {
+		@Override
+		public String toString() {
             return String.format("regex(%s%s%s)",
                     attribute != null ? "@" + attribute + "," : "", pattern.toString(),
-                    group != 0 ? "," + group : "");
-        }
-    }
+					group != 0 ? "," + group : "");
+		}
+	}
+
+	public static class ConcatText extends ElementOperator {
+
+		private List<String> params;
+
+		public ConcatText(List<String> params) {
+			this.params = params;
+		}
+
+		@Override
+		public String operate(Element html) {
+			String finding;
+			StringBuilder builder = new StringBuilder();
+			for (String param : params) {
+				if(param.startsWith("\\")) //Precondition a simply string has to be unescaped with \\ to be handled as such
+				{
+					//its not a xpath or regex, so it should be used as a string for concat
+					//need first to unescape here
+					finding = XTokenQueue.unescape(param); 
+				}else{
+					finding = XPathParser.parse(param).evaluate(html).get();
+				}
+				
+				builder.append(finding);
+			}
+			return builder.toString();
+		}
+
+		@Override
+		public String toString() {
+			return String.format("text(%d)", params);
+		}
+	}
 }
