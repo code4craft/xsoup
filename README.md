@@ -4,7 +4,18 @@ Xsoup
 
 XPath selector based on Jsoup.
 
-## Get started:
+## Maven dependency:
+
+```xml
+<!-- https://mvnrepository.com/artifact/us.codecraft/xsoup -->
+<dependency>
+    <groupId>us.codecraft</groupId>
+    <artifactId>xsoup</artifactId>
+    <version>RELEASE</version>
+</dependency>
+```
+
+## Example usage:
 
 ```java
     @Test
