@@ -1,17 +1,16 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.helper.StringUtil;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Evaluator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.jsoup.helper.StringUtil;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Evaluator;
 
 /**
  * Base combining (and, or) evaluator.
- *
+ * <p>
  * Copy from {@link org.jsoup.select.CombiningEvaluator} because it is package visible
  *
  * @see org.jsoup.select.CombiningEvaluator
@@ -32,7 +31,7 @@ abstract class CombiningEvaluator extends Evaluator {
     Evaluator rightMostEvaluator() {
         return evaluators.size() > 0 ? evaluators.get(evaluators.size() - 1) : null;
     }
-    
+
     void replaceRightMostEvaluator(Evaluator replacement) {
         evaluators.set(evaluators.size() - 1, replacement);
     }
@@ -50,8 +49,7 @@ abstract class CombiningEvaluator extends Evaluator {
         public boolean matches(Element root, Element node) {
             for (int i = 0; i < evaluators.size(); i++) {
                 Evaluator s = evaluators.get(i);
-                if (!s.matches(root, node))
-                    return false;
+                if (!s.matches(root, node)) return false;
             }
             return true;
         }
@@ -85,8 +83,7 @@ abstract class CombiningEvaluator extends Evaluator {
         public boolean matches(Element root, Element node) {
             for (int i = 0; i < evaluators.size(); i++) {
                 Evaluator s = evaluators.get(i);
-                if (s.matches(root, node))
-                    return true;
+                if (s.matches(root, node)) return true;
             }
             return false;
         }

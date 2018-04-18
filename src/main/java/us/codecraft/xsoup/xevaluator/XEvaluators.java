@@ -6,6 +6,7 @@ import org.jsoup.select.Evaluator;
 
 /**
  * Evaluators in Xsoup.
+ *
  * @author code4crafter@gmail.com
  */
 public abstract class XEvaluators {
@@ -20,7 +21,7 @@ public abstract class XEvaluators {
 
     public static class IsNthOfType extends Evaluator.CssNthEvaluator {
         public IsNthOfType(int a, int b) {
-            super(a,b);
+            super(a, b);
         }
 
         protected int calculatePosition(Element root, Element element) {

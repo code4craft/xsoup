@@ -1,13 +1,14 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.examples.HtmlToPlainText;
+//import org.jsoup.examples.HtmlToPlainText;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import us.codecraft.xsoup.Xsoup;
 
 /**
  * Operate on element to get XPath result.
@@ -80,7 +81,11 @@ public abstract class ElementOperator {
 
         @Override
         public String operate(Element element) {
-            return new HtmlToPlainText().getPlainText(element);
+            //FormattingVisitor formatter = new FormattingVisitor();
+            //NodeTraversor.traverse(formatter, element);
+            //return formatter.toString();
+            //return new HtmlToPlainText().getPlainText(element);
+            return Xsoup.HtmlToPlainText(element);
         }
 
         @Override
@@ -106,7 +111,8 @@ public abstract class ElementOperator {
                     TextNode textNode = (TextNode) node;
                     if (group == 0) {
                         accum.append(textNode.text());
-                    } else if (++index == group) {
+                    }
+                    else if (++index == group) {
                         return textNode.text();
                     }
                 }
@@ -162,7 +168,8 @@ public abstract class ElementOperator {
         protected String getSource(Element element) {
             if (attribute == null) {
                 return element.outerHtml();
-            } else {
+            }
+            else {
                 String attr = element.attr(attribute);
                 Validate.notNull(attr, "Attribute " + attribute + " of " + element + " is not exist!");
                 return attr;
@@ -172,8 +179,8 @@ public abstract class ElementOperator {
         @Override
         public String toString() {
             return String.format("regex(%s%s%s)",
-                    attribute != null ? "@" + attribute + "," : "", pattern.toString(),
-                    group != 0 ? "," + group : "");
+                                 attribute != null ? "@" + attribute + "," : "", pattern.toString(),
+                                 group != 0 ? "," + group : "");
         }
     }
 }
