@@ -2,3 +2,6 @@
 /.settings
 /.project
 /.classpath
+
+# Ignore IntelliJ IDEA files.
+*.iml
