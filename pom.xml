@@ -13,6 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jsoup.version>1.13.1</jsoup.version>
     </properties>
     <name>xsoup</name>
     <description>
@@ -50,7 +51,7 @@
             <dependency>
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
-                <version>1.8.3</version>
+                <version>${jsoup.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -66,8 +67,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

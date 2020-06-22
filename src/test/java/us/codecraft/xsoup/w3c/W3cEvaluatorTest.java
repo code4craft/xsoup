@@ -221,8 +221,8 @@ public class W3cEvaluatorTest {
                 "</div>";
 
         String expectedDiv2 = "<div id=\"test2\">\n" +
-                " aa\n" +
-                " <a href=\"https://github.com\">github.com</a>\n" +
+                " aa" +
+                "<a href=\"https://github.com\">github.com</a>\n" +
                 "</div>";
 
         org.w3c.dom.Document document = Xsoup.convertDocument(Jsoup.parse(html));
