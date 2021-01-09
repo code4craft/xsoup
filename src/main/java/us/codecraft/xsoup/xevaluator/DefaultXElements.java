@@ -1,12 +1,11 @@
 package us.codecraft.xsoup.xevaluator;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import us.codecraft.xsoup.XElement;
 import us.codecraft.xsoup.XElements;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * XPath results.
@@ -35,7 +34,8 @@ public class DefaultXElements extends ArrayList<XElement> implements XElements {
     public String get() {
         if (size() < 1) {
             return null;
-        } else {
+        }
+        else {
             return get(0).get();
         }
     }
@@ -61,5 +61,4 @@ public class DefaultXElements extends ArrayList<XElement> implements XElements {
     public Elements getElements() {
         return elements;
     }
-
 }

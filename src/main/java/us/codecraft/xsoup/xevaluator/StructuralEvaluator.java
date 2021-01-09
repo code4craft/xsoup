@@ -29,8 +29,7 @@ abstract class StructuralEvaluator extends Evaluator {
 
         public boolean matches(Element root, Element element) {
             for (Element e : element.getAllElements()) {
-                if (e != element && evaluator.matches(root, e))
-                    return true;
+                if (e != element && evaluator.matches(root, e)) return true;
             }
             return false;
         }
@@ -62,8 +61,7 @@ abstract class StructuralEvaluator extends Evaluator {
         public boolean matches(Element root, Element element) {
             Element parent = element.parent();
             while (parent != null) {
-                if (evaluator.matches(root, parent))
-                    return true;
+                if (evaluator.matches(root, parent)) return true;
                 parent = parent.parent();
             }
             return false;
@@ -95,14 +93,12 @@ abstract class StructuralEvaluator extends Evaluator {
         }
 
         public boolean matches(Element root, Element element) {
-            if (root == element)
-                return false;
+            if (root == element) return false;
 
             Element prev = element.previousElementSibling();
 
             while (prev != null) {
-                if (evaluator.matches(root, prev))
-                    return true;
+                if (evaluator.matches(root, prev)) return true;
 
                 prev = prev.previousElementSibling();
             }
@@ -120,8 +116,7 @@ abstract class StructuralEvaluator extends Evaluator {
         }
 
         public boolean matches(Element root, Element element) {
-            if (root == element)
-                return false;
+            if (root == element) return false;
 
             Element prev = element.previousElementSibling();
             return prev != null && evaluator.matches(root, prev);

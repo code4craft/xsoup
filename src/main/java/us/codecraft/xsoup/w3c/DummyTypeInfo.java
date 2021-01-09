@@ -9,7 +9,7 @@ public class DummyTypeInfo implements TypeInfo {
 
     private static final DummyTypeInfo INSTANCE = new DummyTypeInfo();
 
-    public static DummyTypeInfo getInstance(){
+    public static DummyTypeInfo getInstance() {
         return INSTANCE;
     }
 

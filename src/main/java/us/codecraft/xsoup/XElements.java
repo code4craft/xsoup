@@ -1,8 +1,7 @@
 package us.codecraft.xsoup;
 
-import org.jsoup.select.Elements;
-
 import java.util.List;
+import org.jsoup.select.Elements;
 
 /**
  * @author code4crafter@gmail.com
@@ -13,6 +12,5 @@ public interface XElements {
 
     List<String> list();
 
-    public Elements getElements();
-
+    Elements getElements();
 }

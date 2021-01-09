@@ -1,12 +1,11 @@
 package us.codecraft.xsoup.w3c;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.w3c.dom.Attr;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author code4crafer@gmail.com
@@ -24,11 +23,11 @@ public class AttributesAdaptor {
         this.element = element;
         attrList = new ArrayList<Attr>();
         for (Attribute attribute : attributes) {
-            attrList.add(new AttributeAdaptor(attribute,element));
+            attrList.add(new AttributeAdaptor(attribute, element));
         }
     }
 
-    public List<Attr> get(){
+    public List<Attr> get() {
         return attrList;
     }
 }

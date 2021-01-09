@@ -1,12 +1,11 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.nodes.Element;
-import us.codecraft.xsoup.XElements;
-import us.codecraft.xsoup.XPathEvaluator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jsoup.nodes.Element;
+import us.codecraft.xsoup.XElements;
+import us.codecraft.xsoup.XPathEvaluator;
 
 /**
  * @author code4crafter@gmail.com
@@ -35,7 +34,7 @@ public class CombingXPathEvaluator implements XPathEvaluator {
     @Override
     public boolean hasAttribute() {
         for (XPathEvaluator xPathEvaluator : xPathEvaluators) {
-            if (xPathEvaluator.hasAttribute()){
+            if (xPathEvaluator.hasAttribute()) {
                 return true;
             }
         }

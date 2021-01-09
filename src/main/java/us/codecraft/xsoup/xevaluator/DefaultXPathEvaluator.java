@@ -1,6 +1,5 @@
 package us.codecraft.xsoup.xevaluator;
 
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Collector;
 import org.jsoup.select.Elements;
@@ -27,7 +26,8 @@ public class DefaultXPathEvaluator implements XPathEvaluator {
         Elements elements;
         if (evaluator != null) {
             elements = Collector.collect(evaluator, element);
-        } else {
+        }
+        else {
             elements = new Elements();
             elements.add(element);
         }

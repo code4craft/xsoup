@@ -3,7 +3,9 @@ package us.codecraft.xsoup;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.NodeTraversor;
 import us.codecraft.xsoup.w3c.NodeAdaptors;
+import us.codecraft.xsoup.xevaluator.FormattingVisitor;
 import us.codecraft.xsoup.xevaluator.XPathParser;
 
 /**
@@ -35,4 +37,9 @@ public class Xsoup {
         return NodeAdaptors.getDocument(document);
     }
 
+    public static String HtmlToPlainText(Element element) {
+        FormattingVisitor formatter = new FormattingVisitor();
+        NodeTraversor.traverse(formatter, element);
+        return formatter.toString();
+    }
 }
