@@ -31,33 +31,33 @@
         <developerConnection>scm:git:git@github.com:code4craft/xsoup.git</developerConnection>
         <url>git@github.com:code4craft/xsoup.git</url>
       <tag>xsoup-0.3.0</tag>
-  </scm>
-   <licenses>
-    <license>
-        <name>The MIT License</name>
-        <url>http://jsoup.com/license</url>
-        <distribution>repo</distribution>
-    </license>  
-  </licenses>
+    </scm>
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://jsoup.com/license</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.12</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>1.13.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>3.9.1</version>
-            </dependency>
-        </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.13.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -211,6 +211,5 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 
 </project>
