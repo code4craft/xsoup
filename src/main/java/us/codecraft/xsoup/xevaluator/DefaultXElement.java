@@ -20,25 +20,25 @@ public class DefaultXElement implements XElement {
     }
 
     @Override
-    public String get(){
+    public String get() {
         return get(elementOperator);
     }
 
-    protected String get(ElementOperator elementOperator){
+    protected String get(ElementOperator elementOperator) {
         if (elementOperator == null) {
             return element.toString();
-        } else {
+        }
+        else {
             return elementOperator.operate(element);
         }
     }
 
     public String toString() {
-         return get();
+        return get();
     }
 
     @Override
     public Element getElement() {
         return element;
     }
-
 }

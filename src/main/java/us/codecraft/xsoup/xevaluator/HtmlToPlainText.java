@@ -1,8 +1,10 @@
 package us.codecraft.xsoup.xevaluator;
 
+import java.io.IOException;
+
 import org.jsoup.Jsoup;
-import org.jsoup.internal.StringUtil;
 import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -10,8 +12,6 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
-
-import java.io.IOException;
 
 /**
  * HTML to plain-text. This example program demonstrates the use of jsoup to convert HTML input to lightly-formatted
@@ -24,7 +24,7 @@ import java.io.IOException;
  * To invoke from the command line, assuming you've downloaded the jsoup jar to your current directory:</p>
  * <p><code>java -cp jsoup.jar org.jsoup.examples.HtmlToPlainText url [selector]</code></p>
  * where <i>url</i> is the URL to fetch, and <i>selector</i> is an optional CSS selector.
- * 
+ *
  * @author Jonathan Hedley, jonathan@hedley.net
  */
 public class HtmlToPlainText {
@@ -72,7 +72,8 @@ public class HtmlToPlainText {
         private StringBuilder accum = new StringBuilder(); // holds the accumulated text
 
         // hit when the node is first seen
-        public void head(Node node, int depth) {
+        @Override
+		public void head(Node node, int depth) {
             String name = node.nodeName();
             if (node instanceof TextNode)
                 append(((TextNode) node).text()); // TextNodes carry all user-readable text in the DOM.
@@ -85,7 +86,8 @@ public class HtmlToPlainText {
         }
 
         // hit when all of the node's children (if any) have been visited
-        public void tail(Node node, int depth) {
+        @Override
+		public void tail(Node node, int depth) {
             String name = node.nodeName();
             if (StringUtil.in(name, "br", "dd", "dt", "p", "h1", "h2", "h3", "h4", "h5"))
                 append("\n");

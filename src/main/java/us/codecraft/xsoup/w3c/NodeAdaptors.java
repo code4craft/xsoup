@@ -1,12 +1,15 @@
 package us.codecraft.xsoup.w3c;
 
+import java.util.List;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.*;
-
-import java.util.List;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author code4crafer@gmail.com
@@ -23,7 +26,6 @@ public class NodeAdaptors {
         return null;
     }
 
-
     public static org.w3c.dom.Element getElement(Element element) {
         if (element == null) {
             return null;
@@ -37,7 +39,6 @@ public class NodeAdaptors {
         }
         return new DocumentAdaptor(document);
     }
-
 
     public static NodeList getNodeList(Elements elements) {
         if (elements == null || elements.size() == 0) {
@@ -73,8 +74,4 @@ public class NodeAdaptors {
         }
         return new AttributesAdaptor(attrs, element).get();
     }
-
-
-
-
 }

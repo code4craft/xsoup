@@ -1,11 +1,16 @@
 package us.codecraft.xsoup.w3c;
 
-import org.w3c.dom.*;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author code4crafer@gmail.com
  */
-public class HtmlDocumentType extends NodeAdaptor implements DocumentType{
+public class HtmlDocumentType extends NodeAdaptor implements DocumentType {
 
     private org.jsoup.nodes.Document document;
 

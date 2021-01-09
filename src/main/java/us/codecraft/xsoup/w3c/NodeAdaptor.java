@@ -1,6 +1,8 @@
 package us.codecraft.xsoup.w3c;
 
-import org.w3c.dom.*;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
+import org.w3c.dom.UserDataHandler;
 
 /**
  * @author code4crafer@gmail.com
@@ -96,5 +98,4 @@ public abstract class NodeAdaptor implements Node {
     public Object setUserData(String key, Object data, UserDataHandler handler) {
         throw new UnsupportedOperationException();
     }
-
 }

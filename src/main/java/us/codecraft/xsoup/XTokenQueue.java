@@ -1,11 +1,11 @@
 package us.codecraft.xsoup;
 
-import org.jsoup.internal.StringUtil;
-import org.jsoup.helper.Validate;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.jsoup.helper.Validate;
+import org.jsoup.internal.StringUtil;
 
 /**
  * A character queue with parsing helpers.
@@ -16,16 +16,12 @@ import java.util.regex.Pattern;
  * @see org.jsoup.parser.TokenQueue
  */
 public class XTokenQueue {
+    private static final char ESC = '\\'; // escape char for chomp balanced.
+    private static final String[] quotes = {"\"", "'"};
+    private static final char singleQuote = '\'';
+    private static final char doubleQuote = '"';
     private String queue;
     private int pos = 0;
-
-    private static final char ESC = '\\'; // escape char for chomp balanced.
-
-    private static final String[] quotes = {"\"", "'"};
-
-    private static final char singleQuote = '\'';
-
-    private static final char doubleQuote = '"';
 
     /**
      * Create a new TokenQueue.
@@ -35,6 +31,52 @@ public class XTokenQueue {
     public XTokenQueue(String data) {
         Validate.notNull(data);
         queue = data;
+    }
+
+    /**
+     * Unescaped a \ escaped string.
+     *
+     * @param in backslash escaped string
+     *
+     * @return unescaped string
+     */
+    public static String unescape(String in) {
+        StringBuilder out = new StringBuilder();
+        char last = 0;
+        for (char c : in.toCharArray()) {
+            if (c == ESC) {
+                if (last != 0 && last == ESC) out.append(c);
+            }
+            else {
+                out.append(c);
+            }
+            last = c;
+        }
+        return out.toString();
+    }
+
+    public static String trimQuotes(String str) {
+        Validate.isTrue(str != null && str.length() > 0);
+        String quote = str.substring(0, 1);
+        if (StringUtil.in(quote, "\"", "'")) {
+            Validate.isTrue(str.endsWith(quote), "Quote" + " for " + str + " is incomplete!");
+            str = str.substring(1, str.length() - 1);
+        }
+        return str;
+    }
+
+    public static List<String> trimQuotes(List<String> strs) {
+        Validate.isTrue(strs != null);
+        List<String> list = new ArrayList<String>();
+        for (String str : strs) {
+            list.add(trimQuotes(str));
+        }
+        return list;
+    }
+
+    public static List<String> parseFuncionParams(String paramStr) {
+        XTokenQueue tq = new XTokenQueue(paramStr);
+        return tq.parseFuncionParams();
     }
 
     /**
@@ -83,6 +125,7 @@ public class XTokenQueue {
      * Tests if the next characters on the queue match the sequence. Case insensitive.
      *
      * @param seq String to check queue for.
+     *
      * @return true if the next characters match.
      */
     public boolean matches(String seq) {
@@ -97,34 +140,32 @@ public class XTokenQueue {
      * Case sensitive match test.
      *
      * @param seq string to case sensitively check for
+     *
      * @return true if matched, false if not
      */
     public boolean matchesCS(String seq) {
         return queue.startsWith(seq, pos);
     }
 
-
     /**
      * Tests if the next characters match any of the sequences. Case insensitive.
      *
      * @param seq list of strings to case insensitively check for
+     *
      * @return true of any matched, false if none did
      */
     public boolean matchesAny(String... seq) {
         for (String s : seq) {
-            if (matches(s))
-                return true;
+            if (matches(s)) return true;
         }
         return false;
     }
 
     public boolean matchesAny(char... seq) {
-        if (isEmpty())
-            return false;
+        if (isEmpty()) return false;
 
         for (char c : seq) {
-            if (queue.charAt(pos) == c)
-                return true;
+            if (queue.charAt(pos) == c) return true;
         }
         return false;
     }
@@ -139,13 +180,15 @@ public class XTokenQueue {
      * queue.
      *
      * @param seq String to search for, and if found, remove from queue.
+     *
      * @return true if found and removed, false if not found.
      */
     public boolean matchChomp(String seq) {
         if (matches(seq)) {
             pos += seq.length();
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -193,11 +236,9 @@ public class XTokenQueue {
      * @param seq sequence to remove from head of queue.
      */
     public void consume(String seq) {
-        if (!matches(seq))
-            throw new IllegalStateException("Queue did not match expected sequence");
+        if (!matches(seq)) throw new IllegalStateException("Queue did not match expected sequence");
         int len = seq.length();
-        if (len > remainingLength())
-            throw new IllegalStateException("Queue not long enough to consume sequence");
+        if (len > remainingLength()) throw new IllegalStateException("Queue not long enough to consume sequence");
 
         pos += len;
     }
@@ -206,6 +247,7 @@ public class XTokenQueue {
      * Pulls a string off the queue, up to but exclusive of the match sequence, or to the queue running out.
      *
      * @param seq String to end on (and not include in return, but leave on queue). <b>Case sensitive.</b>
+     *
      * @return The matched data consumed from queue.
      */
     public String consumeTo(String seq) {
@@ -214,7 +256,8 @@ public class XTokenQueue {
             String consumed = queue.substring(pos, offset);
             pos += consumed.length();
             return consumed;
-        } else {
+        }
+        else {
             return remainder();
         }
     }
@@ -224,19 +267,25 @@ public class XTokenQueue {
         String first = seq.substring(0, 1);
         boolean canScan = first.toLowerCase().equals(first.toUpperCase()); // if first is not cased, use index of
         while (!isEmpty()) {
-            if (matches(seq))
-                break;
+            if (matches(seq)) break;
 
             if (canScan) {
                 int skip = queue.indexOf(first, pos) - pos;
                 if (skip == 0) // this char is the skip char, but not match, so force advance of pos
+                {
                     pos++;
+                }
                 else if (skip < 0) // no chance of finding, grab to end
+                {
                     pos = queue.length();
-                else
+                }
+                else {
                     pos += skip;
-            } else
+                }
+            }
+            else {
                 pos++;
+            }
         }
 
         String data = queue.substring(start, pos);
@@ -247,6 +296,7 @@ public class XTokenQueue {
      * Consumes to the first sequence provided, or to the end of the queue. Leaves the terminator on the queue.
      *
      * @param seq any number of terminators to consume to. <b>Case insensitive.</b>
+     *
      * @return consumed string
      */
     // todo: method name. not good that consumeTo cares for case, and consume to any doesn't. And the only use for this
@@ -278,6 +328,7 @@ public class XTokenQueue {
      * isEmpty() == true).
      *
      * @param seq String to match up to, and not include in return, and to pull off queue. <b>Case sensitive.</b>
+     *
      * @return Data matched from queue.
      */
     public String chompTo(String seq) {
@@ -318,20 +369,20 @@ public class XTokenQueue {
                     if (c.equals(singleQuote) || c.equals(doubleQuote)) {
                         inQuotes = true;
                         quote = c;
-                    } else if (c.equals(open))
+                    }
+                    else if (c.equals(open)) {
                         depth++;
-                    else if (c.equals(close))
-                        depth--;
-                } else {
+                    }
+                    else if (c.equals(close)) depth--;
+                }
+                else {
                     if (c.equals(quote)) {
                         inQuotes = false;
                     }
                 }
-
             }
 
-            if (depth > 0 && last != 0)
-                accum.append(c); // don't include the outer match pair in the return
+            if (depth > 0 && last != 0) accum.append(c); // don't include the outer match pair in the return
             last = c;
         } while (depth > 0);
         return accum.toString();
@@ -343,8 +394,9 @@ public class XTokenQueue {
      * in the returned string, which is suitable for regexes (where we need to preserve the escape), but unsuitable for
      * contains text strings; use unescape for that.
      *
-     * @param open  opener
+     * @param open opener
      * @param close closer
+     *
      * @return data matched from the queue
      */
     public String chompBalanced(char open, char close) {
@@ -356,41 +408,21 @@ public class XTokenQueue {
             if (isEmpty()) break;
             Character c = consume();
             if (last == 0 || last != ESC) {
-                if (c.equals(open))
+                if (c.equals(open)) {
                     depth++;
-                else if (c.equals(close))
-                    depth--;
+                }
+                else if (c.equals(close)) depth--;
             }
 
-            if (depth > 0 && last != 0)
-                accum.append(c); // don't include the outer match pair in the return
+            if (depth > 0 && last != 0) accum.append(c); // don't include the outer match pair in the return
             last = c;
         } while (depth > 0);
         return accum.toString();
     }
 
     /**
-     * Unescaped a \ escaped string.
-     *
-     * @param in backslash escaped string
-     * @return unescaped string
-     */
-    public static String unescape(String in) {
-        StringBuilder out = new StringBuilder();
-        char last = 0;
-        for (char c : in.toCharArray()) {
-            if (c == ESC) {
-                if (last != 0 && last == ESC)
-                    out.append(c);
-            } else
-                out.append(c);
-            last = c;
-        }
-        return out.toString();
-    }
-
-    /**
      * Pulls the next run of whitespace characters of the queue.
+     *
      * @return seen
      */
     public boolean consumeWhitespace() {
@@ -409,8 +441,7 @@ public class XTokenQueue {
      */
     public String consumeWord() {
         int start = pos;
-        while (matchesWord())
-            pos++;
+        while (matchesWord()) pos++;
         return queue.substring(start, pos);
     }
 
@@ -421,8 +452,7 @@ public class XTokenQueue {
      */
     public String consumeTagName() {
         int start = pos;
-        while (!isEmpty() && (matchesWord() || matchesAny(':', '_', '-')))
-            pos++;
+        while (!isEmpty() && (matchesWord() || matchesAny(':', '_', '-'))) pos++;
 
         return queue.substring(start, pos);
     }
@@ -434,8 +464,7 @@ public class XTokenQueue {
      */
     public String consumeElementSelector() {
         int start = pos;
-        while (!isEmpty() && (matchesWord() || matchesAny('|', '_', '-')))
-            pos++;
+        while (!isEmpty() && (matchesWord() || matchesAny('|', '_', '-'))) pos++;
 
         return queue.substring(start, pos);
     }
@@ -457,8 +486,7 @@ public class XTokenQueue {
      */
     public String consumeCssIdentifier() {
         int start = pos;
-        while (!isEmpty() && (matchesWord() || matchesAny('-', '_')))
-            pos++;
+        while (!isEmpty() && (matchesWord() || matchesAny('-', '_'))) pos++;
 
         return queue.substring(start, pos);
     }
@@ -470,8 +498,7 @@ public class XTokenQueue {
      */
     public String consumeAttributeKey() {
         int start = pos;
-        while (!isEmpty() && (matchesWord() || matchesAny('-', '_', ':')))
-            pos++;
+        while (!isEmpty() && (matchesWord() || matchesAny('-', '_', ':'))) pos++;
 
         return queue.substring(start, pos);
     }
@@ -489,7 +516,8 @@ public class XTokenQueue {
         return accum.toString();
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return queue.substring(pos);
     }
 
@@ -500,25 +528,6 @@ public class XTokenQueue {
             }
         }
         return false;
-    }
-
-    public static String trimQuotes(String str) {
-        Validate.isTrue(str != null && str.length() > 0);
-        String quote = str.substring(0, 1);
-        if (StringUtil.in(quote, "\"", "'")) {
-            Validate.isTrue(str.endsWith(quote), "Quote" + " for " + str + " is incomplete!");
-            str = str.substring(1, str.length() - 1);
-        }
-        return str;
-    }
-
-    public static List<String> trimQuotes(List<String> strs) {
-        Validate.isTrue(strs != null);
-        List<String> list = new ArrayList<String>();
-        for (String str : strs) {
-            list.add(trimQuotes(str));
-        }
-        return list;
     }
 
     public String consumeToUnescaped(String str) {
@@ -539,12 +548,14 @@ public class XTokenQueue {
             if (matchChomp(",")) {
                 params.add(accum.toString());
                 accum = new StringBuilder();
-            } else if (matchesAny(quotes)) {
+            }
+            else if (matchesAny(quotes)) {
                 String quoteUsed = consumeAny(quotes);
                 accum.append(quoteUsed);
                 accum.append(consumeToUnescaped(quoteUsed));
                 accum.append(consume());
-            } else {
+            }
+            else {
                 accum.append(consumeToAny("\"", "'", ","));
             }
         }
@@ -553,11 +564,4 @@ public class XTokenQueue {
         }
         return params;
     }
-
-    public static List<String> parseFuncionParams(String paramStr) {
-        XTokenQueue tq = new XTokenQueue(paramStr);
-        return tq.parseFuncionParams();
-
-    }
-
 }

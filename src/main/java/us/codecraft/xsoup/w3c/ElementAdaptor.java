@@ -1,7 +1,14 @@
 package us.codecraft.xsoup.w3c;
 
 import org.jsoup.nodes.Attribute;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.TypeInfo;
 
 /**
  * @author code4crafer@gmail.com
@@ -220,5 +227,4 @@ public class ElementAdaptor extends NodeAdaptor implements Element {
     public boolean hasAttributeNS(String namespaceURI, String localName) throws DOMException {
         throw new UnsupportedOperationException();
     }
-
 }

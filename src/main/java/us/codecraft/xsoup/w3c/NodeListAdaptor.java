@@ -1,9 +1,8 @@
 package us.codecraft.xsoup.w3c;
 
+import java.util.List;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.List;
 
 /**
  * @author code4crafer@gmail.com

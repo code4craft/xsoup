@@ -1,16 +1,22 @@
 package us.codecraft.xsoup.w3c;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import us.codecraft.xsoup.Xsoup;
-
-import javax.xml.xpath.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author code4crafer@gmail.com
@@ -221,8 +227,8 @@ public class W3cEvaluatorTest {
                 "</div>";
 
         String expectedDiv2 = "<div id=\"test2\">\n" +
-                " aa\n" +
-                " <a href=\"https://github.com\">github.com</a>\n" +
+                " aa" +
+                "<a href=\"https://github.com\">github.com</a>\n" +
                 "</div>";
 
         org.w3c.dom.Document document = Xsoup.convertDocument(Jsoup.parse(html));

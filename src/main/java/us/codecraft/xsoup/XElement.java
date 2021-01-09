@@ -10,5 +10,4 @@ public interface XElement {
     String get();
 
     Element getElement();
-
 }

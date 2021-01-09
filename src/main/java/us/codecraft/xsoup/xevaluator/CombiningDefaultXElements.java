@@ -1,11 +1,10 @@
 package us.codecraft.xsoup.xevaluator;
 
-import org.jsoup.select.Elements;
-import us.codecraft.xsoup.XElements;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jsoup.select.Elements;
+import us.codecraft.xsoup.XElements;
 
 /**
  * @author code4crafter@gmail.com
@@ -49,5 +48,4 @@ public class CombiningDefaultXElements implements XElements {
         }
         return elements;
     }
-
 }
