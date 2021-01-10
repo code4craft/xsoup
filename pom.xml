@@ -131,7 +131,21 @@
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.15.0</version>
+            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
