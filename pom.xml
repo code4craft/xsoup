@@ -24,7 +24,7 @@
     <scm>
         <connection>scm:git:git@github.com:code4craft/xsoup.git</connection>
         <developerConnection>scm:git:git@github.com:code4craft/xsoup.git</developerConnection>
-        <url>git@github.com:code4craft/xsoup.git</url>
+        <url>https://github.com/code4craft/xsoup/tree/master</url>
         <tag>xsoup-${project.version}</tag>
     </scm>
     <licenses>
