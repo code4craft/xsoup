@@ -136,7 +136,9 @@
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <version>1.15.0</version>
                 <configuration>
-                    <versionTagPrefix>${project.artifactId}-</versionTagPrefix>
+                    <gitFlowConfig>
+                        <versionTagPrefix>${project.artifactId}-</versionTagPrefix>
+                    </gitFlowConfig>
                 </configuration>
             </plugin>
         </plugins>
