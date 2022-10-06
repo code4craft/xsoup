@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.jsoup.helper.Validate;
-import org.jsoup.internal.StringUtil;
 
 /**
  * A character queue with parsing helpers.
@@ -58,7 +57,7 @@ public class XTokenQueue {
     public static String trimQuotes(String str) {
         Validate.isTrue(str != null && str.length() > 0);
         String quote = str.substring(0, 1);
-        if (StringUtil.in(quote, "\"", "'")) {
+        if (in(quote, "\"", "'")) {
             Validate.isTrue(str.endsWith(quote), "Quote" + " for " + str + " is incomplete!");
             str = str.substring(1, str.length() - 1);
         }
@@ -199,7 +198,7 @@ public class XTokenQueue {
      * @return if starts with whitespace
      */
     public boolean matchesWhitespace() {
-        return !isEmpty() && StringUtil.isWhitespace(queue.charAt(pos));
+        return !isEmpty() && isWhitespace(queue.charAt(pos));
     }
 
     /**
@@ -563,5 +562,26 @@ public class XTokenQueue {
             params.add(accum.toString());
         }
         return params;
+    }
+
+    /**
+     * Tests if a code point is "whitespace" as defined in the HTML spec. Used for output HTML.
+     * Copied from jsoup's org.jsoup.internal.StringUtil.
+     * @param c code point to test
+     * @return true if code point is whitespace, false otherwise
+     * @see #isActuallyWhitespace(int)
+     */
+    private static boolean isWhitespace(int c){
+        return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+    }
+
+    // also copied from jsoup's org.jsoup.internal.StringUtil.
+    private static boolean in(final String needle, final String... haystack) {
+        final int len = haystack.length;
+        for (int i = 0; i < len; i++) {
+            if (haystack[i].equals(needle))
+            return true;
+        }
+        return false;
     }
 }
