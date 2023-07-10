@@ -53,9 +53,12 @@ public class FunctionFactory {
     }
 
     /**
-     * 匹配函数
+     * 获取函数信息
+     * @param queue
+     * @return
      */
-    private static XPathParser.FunctionEvaluator matches(XTokenQueue queue){
+    public static XPathParser.FunctionEvaluator getFunction(XTokenQueue queue){
+        // 判断是否允许使用函数
         for (String function : cache.keySet()) {
             if (queue.matchChomp(function)) {
                 // 允许使用函数
@@ -63,21 +66,6 @@ public class FunctionFactory {
             }
         }
         return null;
-    }
-
-    /**
-     * 获取函数信息
-     * @param queue
-     * @return
-     */
-    public static XPathParser.FunctionEvaluator getFunction(XTokenQueue queue){
-        // 1. 判断是否允许使用函数
-        XPathParser.FunctionEvaluator functionEvaluator = matches(queue);
-        if (null == functionEvaluator){
-            return null;
-        }
-        // 2. 执行函数解析
-        return functionEvaluator;
     }
 
 }

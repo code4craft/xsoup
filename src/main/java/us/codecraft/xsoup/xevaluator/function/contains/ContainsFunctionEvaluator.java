@@ -26,7 +26,7 @@ public class ContainsFunctionEvaluator extends CustomFunctionFactory.CustomFunct
         // decideFunction -> 解析使用的函数. context -> 匹配的内容信息
         final String decideFunction = param[0], context = param[1];
 
-        // 获取工厂信息
+        // 获取自定义函数工厂信息
         List<CustomFunction> functionCache = CustomFunctionFactory.getCustomFunction(CONTAINS_FUNCTION_OBJECT);
         if (functionCache.isEmpty()){
             return null;
