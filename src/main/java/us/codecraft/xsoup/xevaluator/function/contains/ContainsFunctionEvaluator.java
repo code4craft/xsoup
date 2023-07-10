@@ -82,6 +82,7 @@ public class ContainsFunctionEvaluator extends CustomFunctionFactory.CustomFunct
     /**
      * {@link Evaluator.ContainsData}
      */
+    @Deprecated
     public static class ContainsAllData extends AbstractContainsCustomFunction {
 
         public ContainsAllData() {
@@ -106,7 +107,7 @@ public class ContainsFunctionEvaluator extends CustomFunctionFactory.CustomFunct
 
         @Override
         protected Evaluator call2(String decideFunction, String context) {
-            return new Evaluator.AttributeWithValueNot(decideFunction, context);
+            return new Evaluator.AttributeWithValue(decideFunction, context);
         }
     }
 
