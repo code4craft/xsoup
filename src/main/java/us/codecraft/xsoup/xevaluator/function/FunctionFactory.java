@@ -57,7 +57,7 @@ public class FunctionFactory {
      */
     private static XPathParser.FunctionEvaluator matches(XTokenQueue queue){
         for (String function : cache.keySet()) {
-            if (queue.matches(function)) {
+            if (queue.matchChomp(function)) {
                 // 允许使用函数
                 return cache.get(function);
             }
